@@ -1,0 +1,41 @@
+﻿@page
+@model TodoApp.Pages.DashboardModel
+
+
+<section class="position-relative">
+    <div class="row">
+        <div class="col-3 p-0">
+            <partial name="_SideBar" />
+        </div>
+        <div class="col-9 p-0">
+            <div class="container">
+                <div class="welcome-text-container">
+                    <p>@DateTime.Now.ToString("ddd, MMMM dd")</p>
+                    @{
+                        string currentTime = "";
+
+                        if (DateTime.Now.Hour < 12)
+                        {
+                            currentTime = "Good Morning";
+                        }
+                        else
+                        {
+                            currentTime = "Good Evening";
+                        }
+
+                    }
+
+                    <p>@currentTime, Darren</p>
+                    <div class="weekly-accomplishment | row">
+                        <div class="week | col">
+                            <p>My week</p>
+                        </div>
+                        <div class="task-completed | col">
+                            <p>1 task completed</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+</section>

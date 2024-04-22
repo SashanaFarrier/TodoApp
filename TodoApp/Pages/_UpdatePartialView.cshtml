@@ -1,0 +1,77 @@
+﻿@model TodoApp.Pages._UpdatePartialViewModel;
+@* @model TodoApp.Pages.CRUD.Tasks *@
+
+<div class="modal fade" id="edit-popup-@Model.Todo.TodoID" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Edit" asp-route-id="Todo.TodoID">
+                <input type="hidden" asp-for="Todo.TodoID">
+                <div class="modal-header">
+                    <input asp-for="Todo.IsCompleted" type="checkbox" class="me-1" />
+                    <label for="Todo_IsCompleted">Mark Completed</label>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card-details | px-4 py-2">
+                        <div class="form-group row align-items-center">
+                            <div class="col-2">
+                                <label asp-for="Todo.Details" class="control-label"></label>
+                            </div>
+                            <div class="col-6">
+                                <input asp-for="Todo.Details" class="fs-3 fw-bold text-black border-0 bg-transparent w-100 p-2 form-control" />
+                                <span asp-validation-for="Todo.Details" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="due | mb-3">
+                            <div class="form-group row align-items-center">
+                                <div class="col-2">
+                                    <label asp-for="Todo.DueOn" class="control-label"></label>
+                                </div>
+                                <div class="col-6">
+                                    <input asp-for="Todo.DueOn" class="fs-3 fw-bold text-black border-0 bg-transparent w-100 p-2 form-control" />
+                                    <span asp-validation-for="Todo.DueOn" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="priority | mb-3">
+                            <div class="priority-btn">
+                                <div class="form-group row align-items-center">
+                                    <div class="col-2">
+                                        <label asp-for="Todo.Priority" class="control-label"></label>
+                                    </div>
+                                 
+                                    <div class="dropdown | col-2">
+                                        <select asp-for="Todo.Priority" class="form-select" aria-label="Priority">
+                                            <option value="low" selected>Low</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="high">High</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="description">
+                            <div class="form-group">
+                                <label asp-for="Todo.Description" class="control-label"></label>
+                                <textarea asp-for="Todo.Description" rows="5" class="p-2 mt-2 w-100" placeholder="What is this task about?"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer | py-2 ms-auto">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+              <form asp-page-handler="Delete" asp-route-id="@Model.Todo.TodoID">
+                            <button class="btn text-danger border-1 border-danger | delete-btn" onclick="confirm('You are about to delete this task. Go ahead?')">
+                                <i class="fa-regular fa-trash-can"></i>
+                                Delete task
+                            </button>
+                        </form>
+        </div>
+    </div>
+</div>

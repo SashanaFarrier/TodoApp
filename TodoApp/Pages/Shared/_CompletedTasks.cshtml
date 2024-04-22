@@ -1,0 +1,40 @@
+﻿
+@foreach (var todo in Model.Todos)
+{
+    if (todo.IsCompleted)
+    {
+        <div id="@todo.TodoID" class="card todo | mb-4">
+            <div class="card-header">
+                <div class="due">
+                    <i class="fa-solid fa-star"></i>
+                    <span>Due date: @todo.DueOn.ToString("MM/dd/yyyy")</span>
+                </div>
+                <div>
+                    <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
+                    </button>
+                    <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
+                </div>
+            </div>
+            <div class="card-details">
+                <p>@todo.Details</p>
+            </div>
+            <div class="card-footer">
+                <div class="priority-tag">
+                    @{
+                        if (todo.Priority != 0)
+                        {
+                            <span class="tag low">@todo.Priority</span>
+                        }
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    }
+ 
+}
+
+
+

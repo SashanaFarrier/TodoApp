@@ -1,0 +1,187 @@
+﻿@page
+@model TodoApp.Pages.ProjectOverviewModel
+@{
+    ViewData["Title"] = "Task Overview";
+}
+
+<section class="position-relative">
+    <div class="row">
+        <div class="col-3 p-0">
+            <partial name="_SideBar" />
+        </div>
+        <div class="col-9 p-0">
+            <header class="text-white p-3">
+                <h3>My Workspace</h3>
+                <ul class="list-unstyled d-flex gap-3">
+                    <li>Overview</li>
+                    <li>Calendar</li>
+                </ul>
+            </header>
+            <div class="tasks-container">
+                <div class="tasks-table | p-3">
+                    <div class="table-head row border border-start-0 border-end-0">
+                        <div class="col">
+                            <p class="my-2">Task name</p>
+                        </div>
+                        <div class="col-4 border-start border-end">
+                            <p class="ms-2 my-2">Due date</p>
+                        </div>
+                    </div>
+                    <div class="table-body">
+                        <div class="recently-added">
+                            <button class="text-black fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
+                                <i class="fa-solid fa-angle-down"></i>
+                                Recently added
+                            </button>
+                            @{int addedRecently = 0; }
+                            <ul class="list-unstyled border-top">
+
+                                @foreach (var task in Model.Todos)
+                                {
+                                    addedRecently++;
+                                    var recent = DateTime.Now.AddDays(5);
+
+                                    if (task.DueOn.Date <= recent && task.DueOn.ToShortDateString() != DateTime.Now.ToShortDateString())
+                                    {
+                                        <li class="border-bottom task-name">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="d-flex justify-content-between align-items-center p-2">
+                                                        @task.Details
+                                                        <button type="button" class="edit-btn border-0 p-1 px-2 rounded-2 opacity-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + task.TodoID)">
+                                                            <i class="fa-solid fa-angle-right text-black"></i>
+                                                        </button>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-4 d-flex align-items-center border-start border-end">
+                                                    @if (task.DueOn.Date < DateTime.Now)
+                                                    {
+                                                        <p class="text-danger"> @task.DueOn.ToShortDateString()</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p> @task.DueOn.ToShortDateString()</p>
+                                                    }
+
+                                                </div>
+
+                                                <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(task)" />
+
+                                            </div>
+
+                                        </li>
+                                    }
+
+                                }
+                            </ul>
+                            @if (addedRecently == 0)
+                            {
+                                <p class="">No task added recently</p>
+                            }  
+                        </div>
+                        <div class="due-today">
+                            <button class="text-black fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
+                                <i class="fa-solid fa-angle-down"></i>
+                                Due today
+                            </button>
+
+                            @{
+                                int dueTodaycount = 0;
+                            }
+
+                            <ul class="list-unstyled border-top">
+                                @foreach (var task in Model.Todos)
+                                {
+                                    var today = DateTime.Now.ToShortDateString();
+
+                                    if (task.DueOn.ToShortDateString() == today)
+                                    {
+                                        dueTodaycount++;
+
+                                        <li class="border-bottom task-name">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="d-flex justify-content-between align-items-center p-2">
+                                                        @task.Details
+                                                        <button type="button" class="edit-btn border-0 p-1 px-2 rounded-2 opacity-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + task.TodoID)">
+                                                            <i class="fa-solid fa-angle-right text-black"></i>
+                                                        </button>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-4 d-flex align-items-center border-start border-end">
+                                                    @task.DueOn.ToShortDateString()
+                                                </div>
+
+                                                <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(task)" />
+
+                                            </div>
+
+                                        </li>
+                                    }
+
+                                }
+                            </ul>
+                            @if (dueTodaycount == 0)
+                            {
+                                <p class="">No task due today</p>
+                            }
+                        </div>
+                        <div class="due-next-week">
+                            <button class="text-black fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
+                                <i class="fa-solid fa-angle-down"></i>
+                                Due next week
+                            </button>
+                            @{
+                                int dueNextWeekcount = 0;
+                            }
+                            <ul class="list-unstyled border-top">
+
+                                @foreach (var task in Model.Todos)
+                                {
+                                    var sevenDays = DateTime.Now.AddDays(7).ToShortDateString();
+
+                                    if (task.DueOn.ToShortDateString() == sevenDays)
+                                    {
+                                        dueNextWeekcount++;
+
+                                        <li class="border-bottom task-name">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="d-flex justify-content-between align-items-center p-2">
+                                                        @task.Details
+                                                        <button type="button" class="edit-btn border-0 p-1 px-2 rounded-2 opacity-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + task.TodoID)">
+                                                            <i class="fa-solid fa-angle-right text-black"></i>
+                                                        </button>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-4 d-flex align-items-center border-start border-end">
+                                                    @task.DueOn.ToShortDateString()
+                                                </div>
+
+                                                <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(task)" />
+
+                                            </div>
+
+                                        </li>
+                                    }
+
+                                }
+                            </ul>
+                            @if (dueNextWeekcount == 0)
+                            {
+                                <p class="">No task due next week</p>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

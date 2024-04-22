@@ -1,0 +1,31 @@
+﻿
+@model TodoApp.Pages.TaskList.CreateModel
+
+
+        <form method="post" class="hidden mb-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="card todo">
+                <div class="card-header">
+                    <div class="due">
+                        <i class="fa-solid fa-star"></i>
+                        <label asp-for="Todo.DueOn" class="control-label">Due date: </label>
+                        <input asp-for="Todo.DueOn" class="form-control" />
+                        <span asp-validation-for="Todo.DueOn" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="card-details">
+                    <input asp-for="Todo.Details" class="form-control" placeholder="Type here..." />
+                    <span asp-validation-for="Todo.Details" class="text-danger"></span>
+                </div>
+                <div class="card-footer">
+                    <div class="col text-end">
+                        <input type="submit" value="Add" class="text-white btn btn-success btn-sm | save-btn" />
+                        <a asp-page="Tasks" class="text-white btn btn-secondary btn-sm | cancel-btn">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

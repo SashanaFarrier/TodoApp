@@ -1,0 +1,91 @@
+﻿
+@model EditModel
+
+ @* <div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="" asp-for="Todo.TodoID" />
+            <div class="form-group">
+                <label asp-for="Todo.CreatedOn" class="control-label"></label>
+                <input asp-for="Todo.CreatedOn" class="form-control" />
+                <span asp-validation-for="Todo.CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Todo.DueOn" class="control-label"></label>
+                <input asp-for="Todo.DueOn" class="form-control" />
+                <span asp-validation-for="Todo.DueOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Todo.CompletedOn" class="control-label"></label>
+                <input asp-for="Todo.CompletedOn" class="form-control" />
+                <span asp-validation-for="Todo.CompletedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Todo.Details" class="control-label"></label>
+                <input asp-for="Todo.Details" class="form-control" />
+                <span asp-validation-for="Todo.Details" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>  *@
+<div class="modal fade" id="edit-popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="btn text-muted border-1 border-primary | completed-btn">Mark Complete</button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="" asp-for="Todo.TodoID" />
+                    <div class="form-group">
+                        <label asp-for="Todo.CreatedOn" class="control-label"></label>
+                        <input asp-for="Todo.CreatedOn" class="form-control" />
+                        <span asp-validation-for="Todo.CreatedOn" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Todo.DueOn" class="control-label"></label>
+                        <input asp-for="Todo.DueOn" class="form-control" />
+                        <span asp-validation-for="Todo.DueOn" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Todo.CompletedOn" class="control-label"></label>
+                        <input asp-for="Todo.CompletedOn" class="form-control" />
+                        <span asp-validation-for="Todo.CompletedOn" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Todo.Details" class="control-label"></label>
+                        <input asp-for="Todo.Details" class="form-control" />
+                        <span asp-validation-for="Todo.Details" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+
+}
+

@@ -1,0 +1,30 @@
+﻿@page
+@* model TodoApp.Pages.CRUD.Tasks *@
+@model TodoApp.Pages.TaskList.IndexModel
+
+@{
+    ViewData["Title"] = "Task List";
+}
+
+
+<section class="position-relative">
+    <div class="row">
+        <div class="col-3 p-0">
+            <partial name="_SideBar" />
+        </div>
+        <div class="col-9 p-0">
+            <partial name="_MainSection" />
+        </div>
+    </div>
+</section>
+@* 
+<div>
+    <a asp-page="Index">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}
