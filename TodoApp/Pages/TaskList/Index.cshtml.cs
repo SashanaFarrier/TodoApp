@@ -15,11 +15,14 @@ namespace TodoApp.Pages.TaskList
     {
         private readonly TodoDBContext _context;
 
+
         public IndexModel(TodoDBContext context)
         {
             _context = context;
         }
         public IList<Todo> Todos { get; set; } = default!;
+
+      
 
         public async Task OnGetAsync()
         {
@@ -40,6 +43,11 @@ namespace TodoApp.Pages.TaskList
                 return Page();
             }
 
+            //if(Todo.DueOn.Date < DateTime.Now)
+            //{
+            //    Todo.IsOverdue = true;
+            //}
+
             _context.Todos.Add(Todo);
             await _context.SaveChangesAsync();
 
@@ -49,18 +57,14 @@ namespace TodoApp.Pages.TaskList
         public async Task<IActionResult> OnGetEditAsync(int? id)
         {
             Todo todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
 
             //var todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
             if (todo == null)
             {
                return NotFound();
             }
-            //Todo = todo;
-            //return Page();
+          
+
             return Partial("_UpdatePartialView", todo);
         }
 
@@ -71,6 +75,28 @@ namespace TodoApp.Pages.TaskList
             {
                 return Page();
             }
+
+
+
+            //check for updates made 
+
+            if (todo.Status == "Started")
+            {
+                todo.IsInProgress = true;
+            } else if (todo.Status == "Completed")
+            {
+                todo.IsCompleted = true;
+                todo.CompletedOn = DateTime.Now;
+            } else
+            {
+                todo.IsInProgress = false;
+                todo.IsCompleted = false;
+            }
+
+            //if(todo.DueOn.Date < DateTime.Now)
+            //{
+            //    todo.IsOverdue = true;
+            //}
 
             _context.Attach(todo).State = EntityState.Modified;
 

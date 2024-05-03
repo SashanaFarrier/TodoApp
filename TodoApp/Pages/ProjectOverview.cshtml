@@ -10,13 +10,13 @@
             <partial name="_SideBar" />
         </div>
         <div class="col-9 p-0">
-            <header class="text-white p-3">
+            <div class="text-white p-3 | dashboard-header">
                 <h3>My Workspace</h3>
                 <ul class="list-unstyled d-flex gap-3">
                     <li>Overview</li>
                     <li>Calendar</li>
                 </ul>
-            </header>
+            </div>
             <div class="tasks-container">
                 <div class="tasks-table | p-3">
                     <div class="table-head row border border-start-0 border-end-0">
@@ -41,7 +41,7 @@
                                     addedRecently++;
                                     var recent = DateTime.Now.AddDays(5);
 
-                                    if (task.DueOn.Date <= recent && task.DueOn.ToShortDateString() != DateTime.Now.ToShortDateString())
+                                    if (task.CreatedOn.Date <= recent && task.DueOn.ToShortDateString() != DateTime.Now.ToShortDateString() && !task.IsCompleted)
                                     {
                                         <li class="border-bottom task-name">
                                             <div class="row">
@@ -96,7 +96,7 @@
                                 {
                                     var today = DateTime.Now.ToShortDateString();
 
-                                    if (task.DueOn.ToShortDateString() == today)
+                                    if (task.DueOn.ToShortDateString() == today && !task.IsCompleted)
                                     {
                                         dueTodaycount++;
 
@@ -113,7 +113,7 @@
 
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center border-start border-end">
-                                                    @task.DueOn.ToShortDateString()
+                                                   <p class="text-success"> @task.DueOn.ToShortDateString()</p>
                                                 </div>
 
                                                 <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(task)" />
@@ -144,7 +144,7 @@
                                 {
                                     var sevenDays = DateTime.Now.AddDays(7).ToShortDateString();
 
-                                    if (task.DueOn.ToShortDateString() == sevenDays)
+                                    if (task.DueOn.ToShortDateString() == sevenDays && !task.IsCompleted)
                                     {
                                         dueNextWeekcount++;
 
@@ -185,3 +185,16 @@
         </div>
     </div>
 </section>
+
+@SectionWriters Scripts {
+    <script>
+    // project overview page
+    const projectOverviewDropdownBtns = document.querySelectorAll(".table-body .dropdown-btn");
+    projectOverviewDropdownBtns.forEach(btn => {
+        const listItemsUL = btn.closest("div").querySelector("ul")
+        btn.addEventListener("click", () => {
+            listItemsUL.classList.toggle("hidden")
+        })
+    })
+    </script>
+}

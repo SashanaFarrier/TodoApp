@@ -1,41 +1,142 @@
 ﻿@page
 @model TodoApp.Pages.DashboardModel
 
+@{
+    int ongoingTasksCount = 0;
+    int completedTasksCount = 0;
+    int dueTasksCount = 0;
 
-<section class="position-relative">
+    DateTime currentDate = DateTime.Now.Date;
+    int daysToSubtract = (int)currentDate.DayOfWeek;
+    var startOfTheWeek = currentDate.AddDays(-daysToSubtract);
+
+    foreach (var task in Model.Todos)
+    {
+        if (task.Status == "Started" && (task.CreatedOn.Date >= startOfTheWeek.Date && (int)task.CreatedOn.DayOfWeek <= 6))
+        {
+            ongoingTasksCount++;
+        }
+        // if (task.Status == "Started" && !task.IsOverdue)
+        // {
+        //     ongoingTasksCount++;
+        // }
+
+        if ((task.CompletedOn.Date >= startOfTheWeek.Date && (int)task.CompletedOn.DayOfWeek < daysToSubtract + 1) &&
+        task.Status == "Completed")
+        {
+            completedTasksCount++;
+
+            // if (task.Status == "Completed")
+            //       {
+            //   CompletedTasksCount++;
+            //       }
+
+        }
+
+        if (daysToSubtract == 6 && task.Status != "Completed")
+        {
+            dueTasksCount++;
+        }
+
+        // if (task.Status != "Completed" && task.IsOverdue)
+        // {
+        //     OverdueTasksCount++;
+        // }
+
+
+    }
+
+}
+
+<section class="position-relative | dashboard-homepage">
     <div class="row">
         <div class="col-3 p-0">
             <partial name="_SideBar" />
         </div>
-        <div class="col-9 p-0">
+        <div class="col-9 p-3">
             <div class="container">
-                <div class="welcome-text-container">
-                    <p>@DateTime.Now.ToString("ddd, MMMM dd")</p>
-                    @{
-                        string currentTime = "";
+                <div class="dashboard-header">
+                    <partial name="_WelcomeText" />
+                </div>
+                <div class="weekly-accomplishment | row mb-5">
+                    <div class="week | col ">
+                        <p class="fw-bold m-0 border-end">My week</p>
+                    </div>
+                    <div class="task-ongoing | col">
+                        <p class="m-0 border-end">(@ongoingTasksCount) tasks ongoing</p>
+                    </div>
+                    <div class="task-overdue | col">
+                        <p class="m-0 border-end">(@dueTasksCount) tasks due</p>
+                    </div>
+                    <div class="task-completed | col">
+                        <p class="m-0">(@completedTasksCount) tasks completed</p>
+                    </div>
+                </div>
+                <button class="text-black fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
+                    <i class="fa-solid fa-angle-down"></i>
+                    View Today's Task
+                </button>
 
-                        if (DateTime.Now.Hour < 12)
-                        {
-                            currentTime = "Good Morning";
-                        }
-                        else
-                        {
-                            currentTime = "Good Evening";
-                        }
+                <div class="tasks-container">
+                    <div class="tasks-table | p-3">
+                        <div class="table-body">
+                            <div class="today-tasks">
+                                <ul class="list-unstyled border-top">
 
-                    }
+                                    @foreach (var task in Model.Todos)
+                                    {
+                                        var today = DateTime.Now.Date;
+                                        if (task.DueOn.Date == today)
+                                        {
+                                            <li class="border-bottom task-name">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="d-flex justify-content-between align-items-center p-2">
+                                                            <div class="content">
+                                                                <p class="m-0"> @task.Details</p>
+                                                                @{
+                                                                    if (task.DueOn.ToLocalTime() == task.DueOn)
+                                                                    {
+                                                                        <p class="fs-6 text-danger m-0">
+                                                                            <span><i class="fa-regular fa-clock"></i></span>
+                                                                            @task.DueOn.ToShortTimeString()
+                                                                        </p>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <p class="fs-6 text-success m-0">
+                                                                            <span><i class="fa-regular fa-clock"></i></span>
+                                                                            @task.DueOn.ToShortTimeString()
+                                                                        </p>
+                                                                    }
+                                                                }
 
-                    <p>@currentTime, Darren</p>
-                    <div class="weekly-accomplishment | row">
-                        <div class="week | col">
-                            <p>My week</p>
-                        </div>
-                        <div class="task-completed | col">
-                            <p>1 task completed</p>
+                                                            </div>
+
+
+                                                            <button type="button" class="edit-btn border-0 p-1 px-2 rounded-2 opacity-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + task.TodoID)">
+                                                                <i class="fa-solid fa-angle-right text-black"></i>
+                                                            </button>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(task)" />
+
+                                                </div>
+
+                                            </li>
+                                        }
+
+                                    }
+                                </ul>
+
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
+    </div>
 </section>

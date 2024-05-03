@@ -1,0 +1,18 @@
+﻿<div class="welcome-text-container | text-center lh-1 my-5">
+    <p class="fw-bold">@DateTime.Now.ToString("ddd, MMMM dd")</p>
+    @{
+        string currentTime = "";
+
+        if (DateTime.Now.Hour < 12)
+        {
+            currentTime = "Good Morning";
+        }
+        else
+        {
+            currentTime = "Good Evening";
+        }
+
+    }
+
+    <p class="fw-bold fs-2">@currentTime, Darren</p>
+</div>

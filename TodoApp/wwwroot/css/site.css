@@ -125,10 +125,10 @@ footer {
 
 /*dashboard styles*/
 .dashboard-header {
-    padding: 2.5em;
+    /*padding: 2.5em;*/
     /*background: var(--clr-yellow);*/
     /*border-radius: 2vw;*/
-    background-color: #ecc179;
+    /*background-color: #ecc179;*/
 }
 
 .left-col {
@@ -211,15 +211,24 @@ footer {
 }
 
 .right-col .search {
+    width: 100%;
+    max-width: 800px;
+    margin-inline: auto;
     border-radius: .5em;
 }
 
-.right-col .new-task-btn {
-    max-width: max-content;
-    /*margin-block: 1em;*/
-    background-color: var(--clr-yellow);
-    border-radius: .5em;
-}
+    .right-col .search .fa-magnifying-glass {
+        top: 50%;
+        transform: translateY(-50%);
+        right: 15px;
+    }
+
+    .right-col .new-task-btn {
+        max-width: max-content;
+        /*margin-block: 1em;*/
+        background-color: var(--clr-yellow);
+        border-radius: .5em;
+    }
 
     .right-col .new-task-btn .fa-angle-down {
         font-size: .8rem;
@@ -246,32 +255,7 @@ footer {
     /*overflow-x: scroll;*/
 }
 
-    /*.right-col .task-types::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(red, green);
-    width: 150px;
-
-}
-
-.right-col .task-types::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
-    background-color: #F5F5F5;
-    border-radius: 10px;
-}
-
-.right-col .task-types::-webkit-scrollbar {
-    width: 10px;
-    background-color: #F5F5F5;
-}
-
-    .right-col .task-types::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        background-color: rgba(0, 0, 0, .03);*/
-    /*background-image: -webkit-gradient(linear, 40% 0%, 75% 84%, from(#4D9C41), to(#19911D), color-stop(.6,#54DE5D))*/
-    /*}*/
+  
 
 
     .right-col .task-types .header {
@@ -397,15 +381,29 @@ footer {
     transition: all 500ms ease-in;
 }
 
-.table-body li.task-name:hover button:first-child {
+.table-body li.task-name:hover button {
    opacity: 1 !important;
 }
 
-.table-body li.task-name button:first-child:hover {
+.table-body li.task-name button:hover {
     background-color: blue !important;
 
 }
 
-.table-body li.task-name button:first-child:hover > i {
+.table-body li.task-name button:hover > i {
     color: #fff !important;
+}
+
+/*dashboard*/
+.dashboard-homepage .weekly-accomplishment {
+    font-size: 1rem;
+    max-width: 900px;
+    padding: 1em;
+    margin-inline: auto;
+    background-color: var(--clr-yellow);
+    border-radius: 10vw;
+}
+
+.dashboard-homepage ul {
+    /*max-width: 600px;*/
 }

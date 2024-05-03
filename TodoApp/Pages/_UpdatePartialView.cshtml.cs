@@ -21,10 +21,11 @@ namespace TodoApp.Pages
         public _UpdatePartialViewModel(Todo todo)
         {
             Todo = todo;
+
         }
         public void OnGet()
         {
-           // Todo = new Todo();
+
         }
 
       
