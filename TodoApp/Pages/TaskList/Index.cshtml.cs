@@ -43,6 +43,8 @@ namespace TodoApp.Pages.TaskList
                 return Page();
             }
 
+            
+
             //if(Todo.DueOn.Date < DateTime.Now)
             //{
             //    Todo.IsOverdue = true;
@@ -76,29 +78,76 @@ namespace TodoApp.Pages.TaskList
                 return Page();
             }
 
-
-
+            var original = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == todo.TodoID);
             //check for updates made 
 
-            if (todo.Status == "Started")
+            if(original != null && todo != null)
             {
-                todo.IsInProgress = true;
-            } else if (todo.Status == "Completed")
-            {
-                todo.IsCompleted = true;
-                todo.CompletedOn = DateTime.Now;
-            } else
-            {
-                todo.IsInProgress = false;
-                todo.IsCompleted = false;
+
+                if(original.Description != todo.Description)
+                {
+                    original.Description = todo.Description;
+                } 
+
+                if(original.Details != todo.Details)
+                {
+                    original.Details = todo.Details;
+                }
+
+                if(original.Status != todo.Status)
+                {
+                    original.Status = todo.Status;
+                }
+
+                if (original.DueOn != todo.DueOn)
+                {
+                    original.DueOn = todo.DueOn;
+                }
+
+                if (original.CompletedOn != todo.CompletedOn)
+                {
+                    original.CompletedOn = todo.CompletedOn;
+                }
+
+                if(original.IsInProgress != todo.IsInProgress)
+                {
+                    original.IsInProgress = todo.IsInProgress;
+                }
+
+                if(original.IsCompleted != todo.IsCompleted)
+                {
+                    original.IsCompleted = todo.IsCompleted;
+                }
+
+                if(original.Priority != todo.Priority)
+                {
+                    original.Priority = todo.Priority;
+                }
+
+                 if (original.Status == "Started")
+                 {
+                    original.IsInProgress = true;
+                 } else if (original.Status == "Completed")
+                 {
+                    original.IsCompleted = true;
+                    original.CompletedOn = DateTime.Now;
+                 } else
+                 {
+                    original.IsInProgress = false;
+                    original.IsCompleted = false;
+                 }
+
+                _context.Attach(original).State = EntityState.Modified;
+
             }
 
+           
             //if(todo.DueOn.Date < DateTime.Now)
             //{
             //    todo.IsOverdue = true;
             //}
 
-            _context.Attach(todo).State = EntityState.Modified;
+           
 
             try
             {

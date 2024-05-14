@@ -18,7 +18,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  /*margin-bottom: 60px;*/
 }
 
 :root {
@@ -65,14 +65,15 @@ body {
         margin: 0 !important;
         padding: 0 !important;
         width: 100% !important;
+        max-width: 100% !important;
     }
-
+/*
 @media (min-width:960px) {
 
     body > .container {
         max-width: 100% !important;
     }
-}
+}*/
 
 header {
     /*width: 100%;*/
@@ -131,8 +132,10 @@ footer {
     /*background-color: #ecc179;*/
 }
 
+
+
 .left-col {
-    padding: 2em;
+    padding: 1em;
     height: 100%;
     background-color: rgba(0, 0, 0, .03);
 }

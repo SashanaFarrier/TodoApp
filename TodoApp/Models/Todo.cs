@@ -7,11 +7,11 @@ namespace TodoApp.Models
     public class Todo
     {
         public int TodoID { get; set; }
+        public string? CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
         [Required]
         [Display(Name = "Due On")]
-
         [DisplayFormat(DataFormatString = "ddd, MMMM dd")]
         public DateTime DueOn { get; set; }  
         public DateTime CompletedOn { get; set; } 
@@ -20,10 +20,11 @@ namespace TodoApp.Models
         public string? Description { get; set; }
         public bool IsCompleted { get; set; } 
         public bool IsInProgress { get; set; }
-        //public bool IsOverdue { get; set; }
+     
         public bool IsOverdue => DueOn < DateTime.Now;
         public string Status { get; set; } = "Not Started";
         public Priority? Priority { get; set; } = Models.Priority.Low;
+        public string? LoggedInUserID { get; set; }
     }
 
     public enum Priority { Low, Medium, High }

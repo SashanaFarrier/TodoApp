@@ -3,16 +3,18 @@
 @model TodoApp.Pages.TaskList.IndexModel
 
 @{
+    Layout = "_TaskViewLayout";
+
     ViewData["Title"] = "Task List";
 }
 
 
 <section class="position-relative">
-    <div class="row">
-        <div class="col-3 p-0">
+    <div class="row flex-column flex-md-row">
+        <div class="col d-none d-lg-block col-lg-4 col-xl-3 p-0">
             <partial name="_SideBar" />
         </div>
-        <div class="col-9 p-0">
+        <div class="col col-lg-8 col-xl-9 p-0">
             <partial name="_MainSection" />
         </div>
     </div>

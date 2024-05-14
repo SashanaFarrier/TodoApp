@@ -2,6 +2,7 @@
 @model TodoApp.Pages.DashboardModel
 
 @{
+
     int ongoingTasksCount = 0;
     int completedTasksCount = 0;
     int dueTasksCount = 0;
@@ -12,14 +13,19 @@
 
     foreach (var task in Model.Todos)
     {
-        if (task.Status == "Started" && (task.CreatedOn.Date >= startOfTheWeek.Date && (int)task.CreatedOn.DayOfWeek <= 6))
-        {
-            ongoingTasksCount++;
-        }
-        // if (task.Status == "Started" && !task.IsOverdue)
+        // if (task.Status == "Started" && (task.CreatedOn.Date >= startOfTheWeek.Date && (int)task.CreatedOn.DayOfWeek <= 6) ||
+        // task.Status == "Started" && (task.DueOn.Date >= startOfTheWeek.Date && (int)task.DueOn.DayOfWeek <= 6)
+        // )
         // {
         //     ongoingTasksCount++;
         // }
+
+
+        if (task.Status == "Started" && task.DueOn.Date >= startOfTheWeek.Date && (int)task.DueOn.DayOfWeek <= 6
+          )
+        {
+            ongoingTasksCount++;
+        }
 
         if ((task.CompletedOn.Date >= startOfTheWeek.Date && (int)task.CompletedOn.DayOfWeek < daysToSubtract + 1) &&
         task.Status == "Completed")
@@ -33,8 +39,10 @@
 
         }
 
-        if (daysToSubtract == 6 && task.Status != "Completed")
+        if (task.DueOn.Date >= startOfTheWeek.Date && (int)task.DueOn.DayOfWeek <= 6)
         {
+
+            // daysToSubtract == 6 && task.Status != "Completed"
             dueTasksCount++;
         }
 
@@ -62,14 +70,14 @@
                     <div class="week | col ">
                         <p class="fw-bold m-0 border-end">My week</p>
                     </div>
-                    <div class="task-ongoing | col">
-                        <p class="m-0 border-end">(@ongoingTasksCount) tasks ongoing</p>
-                    </div>
                     <div class="task-overdue | col">
-                        <p class="m-0 border-end">(@dueTasksCount) tasks due</p>
+                        <p class="m-0 border-end">(@dueTasksCount) Tasks</p>
+                    </div>
+                    <div class="task-ongoing | col">
+                        <p class="m-0 border-end">(@ongoingTasksCount) Ongoing</p>
                     </div>
                     <div class="task-completed | col">
-                        <p class="m-0">(@completedTasksCount) tasks completed</p>
+                        <p class="m-0">(@completedTasksCount) Completed</p>
                     </div>
                 </div>
                 <button class="text-black fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
@@ -85,8 +93,9 @@
 
                                     @foreach (var task in Model.Todos)
                                     {
-                                        var today = DateTime.Now.Date;
-                                        if (task.DueOn.Date == today)
+                                        var today = DateTime.Now;
+                                        var currentTime = new TimeSpan(today.Hour, today.Minute, 0);
+                                        if (task.DueOn.Date == today.Date)
                                         {
                                             <li class="border-bottom task-name">
                                                 <div class="row">
@@ -95,7 +104,7 @@
                                                             <div class="content">
                                                                 <p class="m-0"> @task.Details</p>
                                                                 @{
-                                                                    if (task.DueOn.ToLocalTime() == task.DueOn)
+                                                                    if (task.DueOn.TimeOfDay < currentTime)
                                                                     {
                                                                         <p class="fs-6 text-danger m-0">
                                                                             <span><i class="fa-regular fa-clock"></i></span>
