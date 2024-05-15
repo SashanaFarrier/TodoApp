@@ -55,6 +55,9 @@ namespace TodoApp.Migrations
                     b.Property<bool>("IsInProgress")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsOverdue")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LoggedInUserID")
                         .HasColumnType("nvarchar(max)");
 

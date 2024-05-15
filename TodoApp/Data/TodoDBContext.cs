@@ -13,27 +13,7 @@ namespace TodoApp.Data
             : base(options)
         {
         }
-
-    //    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    //{
-    //    modelBuilder.Entity<Todo>()
-    //        .HasOne(t => t.Priority)
-    //        .WithMany(p => p.Todos)
-    //        .HasForeignKey(t => t.PriorityID);
-    //}
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Priority>()
-        //        .HasNoKey();
-
-        //    modelBuilder.Entity<Todo>()
-        //        .HasOne<Priority>()
-        //        .WithOne(t => t.Todo);
-
-        //}
-
         public DbSet<Todo> Todos { get; set; } = default!;
-        //public DbSet<Priority> Priorities { get; set; } = default!;
+
     }
 }

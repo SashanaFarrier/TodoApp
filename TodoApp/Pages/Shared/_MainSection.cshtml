@@ -1,15 +1,15 @@
 ﻿<div class="right-col">
-    <div class="dashboard-header | text-center lh-1">
+    <div class="dashboard-header | text-center text-white lh-1">
         <div class="container">
             <partial name="_WelcomeText" />
         </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col">
                 <div class="search | position-relative border p-2">
-                    <input class="" type="search" name="search" placeholder="search task or project" />
-                    <i class="fa-solid fa-magnifying-glass position-absolute"></i>
+                    <input class="text-white" type="search" name="search" placeholder="search task or project" />
+                    <i class="fa-solid fa-magnifying-glass text-white position-absolute"></i>
                 </div>
 
             </div>
@@ -23,7 +23,7 @@
                     </button>
                 </div>
             </div>
-            <div class="col-8">
+            <div class="col">
                 <form class="form-filters | d-flex flex-wrap justify-content-end align-items-center gap-3">
                     <div class="category-btn options">
                         <select id="category" class="form-select" aria-label="Category">
@@ -91,7 +91,9 @@
                                             @{
                                                 if (todo.Priority != 0)
                                                 {
-                                                    <span class="tag low">@todo.Priority</span>
+                                                    string priority = todo.Priority.ToString().ToLower();
+
+                                                    <span class="@($"tag {priority}")">@todo.Priority</span>
                                                 }
                                             }
 

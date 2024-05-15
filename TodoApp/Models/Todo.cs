@@ -20,8 +20,7 @@ namespace TodoApp.Models
         public string? Description { get; set; }
         public bool IsCompleted { get; set; } 
         public bool IsInProgress { get; set; }
-     
-        public bool IsOverdue => DueOn < DateTime.Now;
+        public bool IsOverdue { get; set; }
         public string Status { get; set; } = "Not Started";
         public Priority? Priority { get; set; } = Models.Priority.Low;
         public string? LoggedInUserID { get; set; }

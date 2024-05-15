@@ -1,7 +1,8 @@
 ﻿@page
 @model TodoApp.Pages.ProjectOverviewModel
 @{
-    ViewData["Title"] = "Task Overview";
+    Layout = "_TaskViewLayout";
+    ViewData["Title"] = "Tasks Overview";
 }
 
 <section class="position-relative">
@@ -9,16 +10,16 @@
         <div class="col-3 p-0">
             <partial name="_SideBar" />
         </div>
-        <div class="col-9 p-0">
+        <div class="col-9 p-0 | gradient-bg">
             <div class="text-white p-3 | dashboard-header">
                 <h3>My Workspace</h3>
                 <ul class="list-unstyled d-flex gap-3">
                     <li>Overview</li>
-                    <li>Calendar</li>
+                    <li><a class="text-white" asp-area="" asp-page="/Calendar">Calendar</a></li>
                 </ul>
             </div>
             <div class="tasks-container">
-                <div class="tasks-table | p-3">
+                <div class="tasks-table | text-white p-3">
                     <div class="table-head row border border-start-0 border-end-0">
                         <div class="col">
                             <p class="my-2">Task name</p>
@@ -186,7 +187,7 @@
     </div>
 </section>
 
-@SectionWriters Scripts {
+@section Scripts {
     <script>
     // project overview page
     const projectOverviewDropdownBtns = document.querySelectorAll(".table-body .dropdown-btn");

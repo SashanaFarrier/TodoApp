@@ -1,0 +1,42 @@
+﻿@page
+@model CalendarModel
+
+@{
+    Layout = "_TaskViewLayout";
+    ViewData["Title"] = "Calendar";
+}
+
+<section class="position-relative">
+    <div class="row flex-column flex-md-row">
+        <div class="col d-none d-lg-block col-lg-4 col-xl-3 p-0">
+            <partial name="_SideBar" />
+        </div>
+        <div class="col col-lg-8 col-xl-9 p-0 | gradient-bg">
+            <div class="container">
+                <div id='calendar'></div>
+            </div>
+           
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    <script>
+        //fullcalendar.io library
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar')
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+            })
+            calendar.render();
+            
+           
+        });
+      
+    </script>
+
+}
+
+
+

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TodoApp.Data;
+using TodoApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<TodoDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TodoDBContext") ?? throw new InvalidOperationException("Connection string 'TodoDBContext' not found.")));
+
+builder.Services.AddHostedService<OverdueTaskChecker>();
 
 var app = builder.Build();
 
