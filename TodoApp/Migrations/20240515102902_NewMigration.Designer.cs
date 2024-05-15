@@ -12,8 +12,8 @@ using TodoApp.Data;
 namespace TodoApp.Migrations
 {
     [DbContext(typeof(TodoDBContext))]
-    [Migration("20240418113357_RemovePriorityDB")]
-    partial class RemovePriorityDB
+    [Migration("20240515102902_NewMigration")]
+    partial class NewMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace TodoApp.Migrations
                     b.Property<DateTime>("CompletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -49,8 +52,24 @@ namespace TodoApp.Migrations
                     b.Property<DateTime>("DueOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Priority")
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsInProgress")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsOverdue")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LoggedInUserID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Priority")
                         .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TodoID");
 

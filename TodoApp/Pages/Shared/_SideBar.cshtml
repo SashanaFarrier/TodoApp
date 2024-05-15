@@ -1,13 +1,13 @@
 ﻿
 <div class="left-col">
-    <div class="container">
+    <div class="container p-2">
         <h1 class="fw-bold d-none d-md-block">TaskApp<span class="colored-text">.</span></h1>
         <p class="small-text | text-muted fw-bold">Focus. Organize. Plan ahead</p>
-        <div class="user-profile | d-flex justify-content-between align-items-center border p-2 my-5 gap-3">
+        <div class="user-profile | d-flex align-items-center border p-2 my-5 gap-3">
             <i class="fa-solid fa-user-plus"></i>
             <div class="user-info">
-                <span class="m-0">Darren Robinson</span>
-                <span>darrenrob777@gmailcom</span>
+                <p class="fw-bold m-0">Darren Robinson</p>
+                <p class="m-0">darrenrob777@gmailcom</p>
             </div>
         </div>
             <nav>
@@ -32,7 +32,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="text-muted text-decoration-none" asp-area="" asp-page="">
+                        <a class="text-muted text-decoration-none" asp-area="" asp-page="/Calendar">
                             <i class="fa-solid fa-calendar-days"></i>
                             Calendar
                         </a>
@@ -44,6 +44,12 @@
                             Settings
                         </a>
                     </li>
+                <li>
+                    <a class="text-danger text-decoration-none" asp-area="" asp-page="">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Logout
+                    </a>
+                </li>
                 </ul>
             </nav>
     </div>

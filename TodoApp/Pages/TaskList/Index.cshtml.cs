@@ -42,7 +42,6 @@ namespace TodoApp.Pages.TaskList
             {
                 return Page();
             }
-
             
 
             //if(Todo.DueOn.Date < DateTime.Now)

@@ -2,6 +2,8 @@
 @model TodoApp.Pages.DashboardModel
 
 @{
+    Layout = "_TaskViewLayout";
+    ViewData["Title"] = "Dashboard";
 
     int ongoingTasksCount = 0;
     int completedTasksCount = 0;
@@ -61,9 +63,9 @@
         <div class="col-3 p-0">
             <partial name="_SideBar" />
         </div>
-        <div class="col-9 p-3">
+        <div class="col-9 p-3 | gradient-bg">
             <div class="container">
-                <div class="dashboard-header">
+                <div class="text-white | dashboard-header">
                     <partial name="_WelcomeText" />
                 </div>
                 <div class="weekly-accomplishment | row mb-5">
@@ -80,14 +82,14 @@
                         <p class="m-0">(@completedTasksCount) Completed</p>
                     </div>
                 </div>
-                <button class="text-black fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
+                <button class="text-white fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
                     <i class="fa-solid fa-angle-down"></i>
                     View Today's Task
                 </button>
 
                 <div class="tasks-container">
                     <div class="tasks-table | p-3">
-                        <div class="table-body">
+                        <div class="text-white | table-body">
                             <div class="today-tasks">
                                 <ul class="list-unstyled border-top">
 
