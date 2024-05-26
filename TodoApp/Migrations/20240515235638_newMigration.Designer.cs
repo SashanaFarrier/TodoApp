@@ -12,8 +12,8 @@ using TodoApp.Data;
 namespace TodoApp.Migrations
 {
     [DbContext(typeof(TodoDBContext))]
-    [Migration("20240515102902_NewMigration")]
-    partial class NewMigration
+    [Migration("20240515235638_newMigration")]
+    partial class newMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
