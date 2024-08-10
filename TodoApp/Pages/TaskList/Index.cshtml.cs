@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using TodoApp.Areas.Identity.Data;
 using TodoApp.Data;
 using TodoApp.Models;
 
@@ -14,19 +18,43 @@ namespace TodoApp.Pages.TaskList
     public class IndexModel : PageModel
     {
         private readonly TodoDBContext _context;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        //private readonly IUserStore<User> _userStore;
+        //private readonly IUserEmailStore<User> _emailStore;
+        //private readonly IEmailSender _emailSender;
 
 
-        public IndexModel(TodoDBContext context)
+        public IndexModel(TodoDBContext context, UserManager<User> userManager,
+            SignInManager<User> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
+
+        public IList<Todo> CurrentUserTodos { get; set; }
         public IList<Todo> Todos { get; set; } = default!;
 
-      
-
+    
         public async Task OnGetAsync()
         {
-            Todos = await _context.Todos.ToListAsync();
+            var todos = await _context.Todos.ToListAsync();
+
+            CurrentUserTodos = new List<Todo>();
+            //Todos = await _context.Todos.ToListAsync();
+            var userId =  _userManager.GetUserId(User);
+            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            foreach (var todo in todos)
+            {
+                if (todo.LoggedInUserID == userId)
+                {
+                    CurrentUserTodos.Add(todo);
+                }
+            }
+
+            Todos = CurrentUserTodos;
            
         }
 
@@ -43,12 +71,8 @@ namespace TodoApp.Pages.TaskList
                 return Page();
             }
             
-
-            //if(Todo.DueOn.Date < DateTime.Now)
-            //{
-            //    Todo.IsOverdue = true;
-            //}
-
+            Todo.LoggedInUserID = _userManager.GetUserId(User);
+            
             _context.Todos.Add(Todo);
             await _context.SaveChangesAsync();
 

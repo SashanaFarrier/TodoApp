@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using TodoApp.Areas.Identity.Data;
 using TodoApp.Data;
 using TodoApp.Models;
 
@@ -9,13 +11,14 @@ namespace TodoApp.Pages
     public class DashboardModel : PageModel
     {
         private readonly TodoDBContext _context;
-
+        private readonly SignInManager<User> _signInManager;
         //[BindProperty]
         //public Todo Todo { get; set; }
 
-        public DashboardModel(TodoDBContext context)
+        public DashboardModel(TodoDBContext context, SignInManager<User> signInManager)
         {
             _context = context;
+            _signInManager = signInManager;
         }
 
         public IList<Todo> Todos { get; set; } = default!;
@@ -115,6 +118,27 @@ namespace TodoApp.Pages
             }
 
             return RedirectToPage("/Dashboard");
+        }
+
+        //Logout
+
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
+
+            //if (returnUrl != null)
+            //{
+            //    return LocalRedirect(returnUrl);
+            //}
+            //else
+            //{
+            //    // This needs to be a redirect so that the browser performs a new
+            //    // request and the identity for the user gets updated.
+            //    return RedirectToPage();
+            //}
+            //return RedirectToPage("~/Areas/Identity/Pages/Account/Login"); 
+            return RedirectToPage("/Index");
+
         }
 
 

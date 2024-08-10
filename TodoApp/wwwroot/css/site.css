@@ -13,14 +13,16 @@
 
 html {
     font-size: 16px;
+    height: 100%;
+    min-height: 100vh;
 }
 
-html, body {
+/*body, main {
     height: 100%;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
-}
+}*/
 
 body > .container {
     margin: 0 !important;
@@ -30,8 +32,12 @@ body > .container {
     height: 100%;
 }
 
-/*make thead left col take up 100% height*/
-main, section, section > .row {
+/*make the left col take up 100% height*/
+/*main, section, section > .row {
+    height: 100%;
+}*/
+
+section, section > .row {
     height: 100%;
 }
 
@@ -52,18 +58,12 @@ button {
     color: #fff !important;
 }
 
-/*
-p[contenteditable=true],
-span[contenteditable=true] {
-    outline: none;
-}
-*/
-.get-started-btn {
+/*.get-started-btn {
     background-color: var(--clr-yellow);
 }
-
+*/
 .logo > img {
-    max-width: 80px;
+    max-width: 50px;
     aspect-ratio: 1;
     border-radius: 50%;
 }
@@ -80,6 +80,7 @@ footer {
     color: #fff;
     padding: 1em;
     background-color: var(--clr-blue);
+    background-size: cover;
 }
 
 /*left column styles*/
@@ -374,4 +375,24 @@ footer {
 
 .fc .fc-view-harness a {
     color: #fff;
+}
+
+
+/*forms*/
+
+/*register form*/
+
+.register-form-container,
+.sign-in-form-container {
+    margin-inline: auto;
+    margin-top: 4em;
+    padding: 2em;
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 1em;
+}
+
+.register-form-container button,
+.sign-in-form-container button {
+    background-color: var(--clr-blue);
 }

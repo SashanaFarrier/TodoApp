@@ -44,13 +44,19 @@
                             Settings
                         </a>
                     </li>
-                <li>
+               @*  <li>
                     <a class="text-danger text-decoration-none" asp-area="Identity" asp-page="/Account/Logout">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         Logout
                     </a>
-                </li>
+                </li> *@
                 </ul>
             </nav>
+        <form asp-page-handler="Logout" asp-route-returnUrl="@Url.Page("/Account/Manage/Login")" method="post">
+            <button type="submit" class="nav-link btn btn-link text-danger">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                Logout
+            </button>
+        </form>
     </div>
 </div>
