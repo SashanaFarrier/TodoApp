@@ -65,46 +65,49 @@
                         <!--this is the form for adding new task.-->
                         <partial name="Create" model="Model.Todo" />
                        <!--Todo tasks-->
-                        @foreach (var todo in Model.Todos)
-                        {
-                            if (!todo.IsCompleted && !todo.IsInProgress && !todo.IsOverdue)
+                        @if(Model.Todos.Count > 0) {
+                            foreach (var todo in Model.Todos)
                             {
-                                <div id="@todo.TodoID" class="card todo | mb-4">
-                                    <div class="card-header">
-                                        <div class="due">
-                                            <i class="fa-solid fa-star"></i>
-                                            <span>Due date: @todo.DueOn.ToString("MM/dd/yyyy")</span>
+                                if (!todo.IsCompleted && !todo.IsInProgress && !todo.IsOverdue)
+                                {
+                                    <div id="@todo.TodoID" class="card todo | mb-4">
+                                        <div class="card-header">
+                                            <div class="due">
+                                                <i class="fa-solid fa-star"></i>
+                                                <span>Due date: @todo.DueOn.ToString("MM/dd/yyyy")</span>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
+                                                    <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
+                                                </button>
+                                                <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
+                                            </div>
                                         </div>
-                                        <div>
-                                            <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
-                                                <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
-                                            </button>
-                                            <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
+                                        <div class="card-details">
+                                            <p>@todo.Details</p>
                                         </div>
-                                    </div>
-                                    <div class="card-details">
-                                        <p>@todo.Details</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="priority-tag">
-                                            @* <span class="tag low">@todo.Priority</span> *@
-                                            @{
-                                                if (todo.Priority != 0)
-                                                {
-                                                    string priority = todo.Priority.ToString().ToLower();
+                                        <div class="card-footer">
+                                            <div class="priority-tag">
+                                                @* <span class="tag low">@todo.Priority</span> *@
+                                                @{
+                                                    if (todo.Priority != 0)
+                                                    {
+                                                        string priority = todo.Priority.ToString().ToLower();
 
-                                                    <span class="@($"tag {priority}")">@todo.Priority</span>
+                                                        <span class="@($"tag {priority}")">@todo.Priority</span>
+                                                    }
                                                 }
-                                            }
 
+                                            </div>
                                         </div>
+
                                     </div>
+                                }
 
-                                </div>
+
                             }
-
-
                         }
+                       
                     </div>
                 </div>
 
@@ -114,43 +117,47 @@
                     </div>
 
                     <div class="in-progress-cards task-details">
-                        @foreach (var todo in Model.Todos)
+                        @if(Model.Todos.Count > 0)
                         {
-                            if ((todo.IsInProgress && todo.Status == "Started") && (!todo.IsOverdue && !todo.IsCompleted))
+                            foreach (var todo in Model.Todos)
                             {
-                                <div id="@todo.TodoID" class="card todo | mb-4">
-                                    <div class="card-header">
-                                        <div class="due">
-                                            <i class="fa-solid fa-star"></i>
-                                            <span>Due date: @todo.DueOn.ToString("MM/dd/yyyy")</span>
+                                if ((todo.IsInProgress && todo.Status == "Started") && (!todo.IsOverdue && !todo.IsCompleted))
+                                {
+                                    <div id="@todo.TodoID" class="card todo | mb-4">
+                                        <div class="card-header">
+                                            <div class="due">
+                                                <i class="fa-solid fa-star"></i>
+                                                <span>Due date: @todo.DueOn.ToString("MM/dd/yyyy")</span>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
+                                                    <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
+                                                </button>
+                                                <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
+                                            </div>
                                         </div>
-                                        <div>
-                                            <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
-                                                <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
-                                            </button>
-                                            <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
+                                        <div class="card-details">
+                                            <p>@todo.Details</p>
                                         </div>
-                                    </div>
-                                    <div class="card-details">
-                                        <p>@todo.Details</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="priority-tag">
-                                            @{
-                                                if (todo.Priority != 0)
-                                                {
-                                                    <span class="tag low">@todo.Priority</span>
+                                        <div class="card-footer">
+                                            <div class="priority-tag">
+                                                @{
+                                                    if (todo.Priority != 0)
+                                                    {
+                                                        <span class="tag low">@todo.Priority</span>
+                                                    }
                                                 }
-                                            }
 
+                                            </div>
                                         </div>
+
                                     </div>
+                                }
 
-                                </div>
+
                             }
-
-
                         }
+                       
                     </div>
                 </div>
                 <div class="overdue tasks">
@@ -159,43 +166,47 @@
                     </div>
 
                     <div class="overdue-cards task-details">
-                        @foreach (var todo in Model.Todos)
+                        @if(Model.Todos.Count > 0)
                         {
-                            if (todo.IsOverdue && !todo.IsCompleted)
+                            foreach (var todo in Model.Todos)
                             {
-                                <div id="@todo.TodoID" class="card todo | mb-4">
-                                    <div class="card-header">
-                                        <div class="due">
-                                            <i class="fa-solid fa-star"></i>
-                                            <span>Due date: @todo.DueOn.ToString("MM/dd/yyyy")</span>
+                                if (todo.IsOverdue && !todo.IsCompleted)
+                                {
+                                    <div id="@todo.TodoID" class="card todo | mb-4">
+                                        <div class="card-header">
+                                            <div class="due">
+                                                <i class="fa-solid fa-star"></i>
+                                                <span>Due date: @todo.DueOn.ToString("MM/dd/yyyy")</span>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
+                                                    <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
+                                                </button>
+                                                <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
+                                            </div>
                                         </div>
-                                        <div>
-                                            <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
-                                                <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
-                                            </button>
-                                            <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
+                                        <div class="card-details">
+                                            <p>@todo.Details</p>
                                         </div>
-                                    </div>
-                                    <div class="card-details">
-                                        <p>@todo.Details</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="priority-tag">
-                                            @{
-                                                if (todo.Priority != 0)
-                                                {
-                                                    <span class="tag low">@todo.Priority</span>
+                                        <div class="card-footer">
+                                            <div class="priority-tag">
+                                                @{
+                                                    if (todo.Priority != 0)
+                                                    {
+                                                        <span class="tag low">@todo.Priority</span>
+                                                    }
                                                 }
-                                            }
 
+                                            </div>
                                         </div>
+
                                     </div>
+                                }
 
-                                </div>
+
                             }
-
-
                         }
+                       
                     </div>
                 </div>
 
@@ -205,44 +216,45 @@
                     </div>
 
                     <div class="completed-cards task-details">
-
-                        @foreach (var todo in Model.Todos)
+                        @if (Model.Todos.Count > 0)
                         {
-                            if (todo.IsCompleted)
+                            foreach (var todo in Model.Todos)
                             {
-                                <div id="@todo.TodoID" class="card todo | mb-4">
-                                    <div class="card-header">
-                                        <div class="due">
-                                            <i class="fa-solid fa-star"></i>
-                                            <span>Due date: @todo.DueOn.ToString("MM/dd/yyyy")</span>
+                                if (todo.IsCompleted)
+                                {
+                                    <div id="@todo.TodoID" class="card todo | mb-4">
+                                        <div class="card-header">
+                                            <div class="due">
+                                                <i class="fa-solid fa-star"></i>
+                                                <span>Due date: @todo.DueOn.ToString("MM/dd/yyyy")</span>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
+                                                    <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
+                                                </button>
+                                                <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
+                                            </div>
                                         </div>
-                                        <div>
-                                            <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
-                                                <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
-                                            </button>
-                                            <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
+                                        <div class="card-details">
+                                            <p>@todo.Details</p>
                                         </div>
-                                    </div>
-                                    <div class="card-details">
-                                        <p>@todo.Details</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="priority-tag">
-                                            @{
-                                                if (todo.Priority != 0)
-                                                {
-                                                    <span class="tag low">@todo.Priority</span>
+                                        <div class="card-footer">
+                                            <div class="priority-tag">
+                                                @{
+                                                    if (todo.Priority != 0)
+                                                    {
+                                                        <span class="tag low">@todo.Priority</span>
+                                                    }
                                                 }
-                                            }
 
+                                            </div>
                                         </div>
+
                                     </div>
+                                }
 
-                                </div>
                             }
-
                         }
-
                     </div>
 
                 </div>

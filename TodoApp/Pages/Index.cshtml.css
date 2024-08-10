@@ -1,0 +1,57 @@
+﻿
+.main-homepage {
+    color: white;
+    text-align: center;
+    display: grid;
+    place-content: center;
+    height: 100%;
+    position: relative;
+    background-image: url('../doodle-bg.jpg');
+    isolation: isolate;
+}
+
+.main-homepage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0,0,0,0.7);
+    z-index: -1;
+}
+
+h1 {
+    font-size: 4rem;
+    margin: 0;
+}
+
+p {
+    font-size: 1.25rem;
+}
+
+.sign-up-btn {
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    margin-inline: auto;
+    padding: 1em 2em;
+    background-color: #ff9f00;
+    border: 0;
+    border-radius: .5em;
+}
+
+.sign-in-text {
+    margin-top: 2em;
+}
+
+.sign-in-text > a {
+    color: #ff9f00;
+}
+
+.text-content {
+    margin-bottom: 2em;
+}
+
+.text-content p {
+    text-shadow: 2px 2px 15px #ff9f00;
+}
+
+

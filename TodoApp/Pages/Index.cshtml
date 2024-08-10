@@ -1,10 +1,29 @@
 ﻿@page
 @model IndexModel
 @{
+    Layout = null;
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Let's get you started!</h1>
-    <p></p>
-</div>
+<!DOCTYPE html>
+<html lang="en" style="height:100%">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="TodoApp.styles.css" asp-append-version="true" />
+</head>
+<body style="margin: 0; height: 100%">
+    <div class="text-center | main-homepage">
+        <div class="text-content">
+            <h1 class="display-4">Let's get you started!</h1>
+            <p>Start tracking and managing tasks to organize your every day life.</p>
+        </div>
+        <div class="ctas">
+            <a href="/Identity/Account/Register" class="sign-up-btn">Sign up for an account</a>
+            <p class="sign-in-text">Already have an account? <a href="Identity/Account/Login">Sign in here</a></p>
+        </div>
+    </div>
+</body>
+

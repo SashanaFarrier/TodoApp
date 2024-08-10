@@ -70,7 +70,7 @@ namespace TodoApp.Migrations
 
                     b.HasKey("TodoID");
 
-                    b.ToTable("Todos");
+                    b.ToTable("Todos", (string)null);
                 });
 #pragma warning restore 612, 618
         }

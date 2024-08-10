@@ -1,26 +1,100 @@
 ﻿@page
 @model PersonalDataModel
+@inject SignInManager<User> SignInManager
+
 @{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+
+    Layout = "_TaskViewLayout";
     ViewData["Title"] = "Personal Data";
-    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+    // ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<h3>@ViewData["Title"]</h3>
+@* <h3>@ViewData["Title"]</h3> *@
+<section class="position-relative">
+    <div class="row flex-wrap">
+        <div class="col d-none d-lg-block col-lg-4 col-xl-3 p-0">
+            <partial name="_SideBar" />
+        </div>
+        <div class="col col-lg-8 col-xl-9 p-5">
+            <div class="row flex-wrap gap-5">
 
-<div class="row">
-    <div class="col-md-6">
-        <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
-        <p>
-            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
-        </p>
-        <form id="download-data" asp-page="DownloadPersonalData" method="post">
-            <button class="btn btn-primary" type="submit">Download</button>
-        </form>
-        <p>
-            <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
-        </p>
+                <div class="col-5">
+                    <h3>My Account</h3>
+                    <form>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" aria-label="name" id="name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input class="form-control" type="email" value="darrenrob777@gmail.com" aria-label="email" readonly>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                    @*  <ul class="nav nav-pills flex-column">
+                    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
+                    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
+                    @if (hasExternalLogins)
+                    {
+                    <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+                    }
+                    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
+                    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
+                    </ul> *@
+
+                </div>
+                <div class="col-5">
+                    <h4>Manage Email</h4>
+                    <form>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="name" value="darrenrob777@gmail.com" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newEmail" class="form-label">New Email</label>
+                            <input class="form-control" id="newEmail" type="email" value="darrenrob777@gmail.com" aria-label="new email">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Change Email</button>
+                    </form>
+                </div>
+                <div class="col-5">
+                    <h4>Change Password</h4>
+                    <form>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Current password</label>
+                            <input type="text" class="form-control" id="pasword" aria-label="password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New password</label>
+                            <input class="form-control" id="newPassword" type="text" aria-label="new password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm new password</label>
+                            <input class="form-control" id="confirmPassword" type="text" aria-label="confirm new password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    </form>
+                </div>
+            </div>
+            <div class="danger-zone | mt-5">
+                <h3 class="text-danger">Danger Zone</h3>
+                <div class="text-content | col-5 p-3 border border-danger rounded-3">
+                    <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+                    </p>
+                    <form method="post">
+                        <button asp-page-handler="DeleteAccount" class="btn btn-danger">Delete account</button>
+                    </form>
+                </div>
+               
+                @* <p>
+                <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
+                </p> *@
+            </div>
+        </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
