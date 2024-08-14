@@ -47,9 +47,9 @@ body {
     height: 100%;
 }*/
 
-section, section > .row {
+/*section, section > .row {
     height: 100%;
-}
+}*/
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
@@ -64,9 +64,9 @@ section {
 }
 
 
-button {
+/*button {
     color: #fff !important;
-}
+}*/
 
 /*.get-started-btn {
     background-color: var(--clr-yellow);
@@ -112,25 +112,25 @@ footer {
     border-radius: 50%;
 }
 
-.left-col nav {
+.left-col #sidebar-nav {
     max-width: 450px;
 }
 
-.left-col ul > li {
+#sidebar-nav ul > li {
     font-weight: bold;
     margin-bottom: 1em;
     padding: 1em;
 }
 
-.left-col ul > li:hover {
+#sidebar-nav li:hover {
     background-color: rgba(0, 0, 0, .06);
 }
 
-.left-col ul > li > i {
+#sidebar-nav ul > li > i {
     margin-right: .25em;
 }
 
-.left-col ul > li.active {
+#sidebar-nav ul > li.active {
     /*color: #fff !important;*/
     background-color: var(--clr-yellow)
 }
@@ -368,8 +368,10 @@ footer {
 }
 
 .gradient-bg {
-    background: rgb(0,0,0);
-    background: linear-gradient(180deg, rgba(20,33,61,1) 0%, rgba(252,163,17,1) 100%);
+    background: var(--clr-black);
+    /*background: linear-gradient(180deg, rgba(20,33,61,1) 0%, rgba(252,163,17,1) 100%);*/
+    /*background: linear-gradient(180deg, rgba(22,22,22,.5) 0%, rgba(3,166,167,.6) 28%);*/
+    background: linear-gradient(180deg, rgba(255,159,0,1) 0%, rgba(3,166,167,1) 100%);
 }
 
 .fc .fc-toolbar.fc-header-toolbar {
@@ -436,6 +438,8 @@ footer {
     max-width: 400px;
 }
 
+/*media queries*/
+
 @media (max-width: 991px) {
     .sign-in-form-container {
         border-top-left-radius: 30vw;
@@ -443,3 +447,32 @@ footer {
         padding: 5em;
     }
 }
+
+/*Dashboard UI*/
+@media (max-width: 789px) {
+    .left-col-container {
+        display: none;
+    }
+
+   .right-col-container {
+       width: 100% !important;
+   }
+}
+
+@media (min-width: 790px) {
+    .navbar {
+        display: none;
+    }
+
+    .left-col-container {
+       font-size: .875rem;
+    }
+
+    .left-col-container .user-info p:nth-of-type(2) {
+        display: none;
+    }
+
+}
+
+
+

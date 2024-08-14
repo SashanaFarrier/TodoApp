@@ -43,38 +43,38 @@
 
 }
 
-<section class="position-relative | dashboard-homepage">
-    <div class="row">
-        <div class="col-3 p-0">
+<section class="position-relative h-100 | dashboard-homepage">
+    <div class="row h-100">
+        <div class="col-3 p-0 | left-col-container">
             <partial name="_SideBar" />
         </div>
-        <div class="col-9 p-3 | gradient-bg">
+        <div class="col-9 p-3 text-center text-md-start | gradient-bg right-col-container">
             <div class="container">
                 <div class="text-white | dashboard-header">
                     <partial name="_WelcomeText" />
                 </div>
-                <div class="weekly-accomplishment | row mb-5">
+                <div class="weekly-accomplishment | row flex-column mb-5 flex-md-row">
                     <div class="week | col ">
-                        <p class="fw-bold m-0 border-end">My week</p>
+                        <p class="fw-bold m-0 ">My week</p>
                     </div>
                     <div class="task-overdue | col">
-                        <p class="m-0 border-end">(@dueTasksCount) Tasks</p>
+                        <p class="m-0 ">(@dueTasksCount) Tasks</p>
                     </div>
                     <div class="task-ongoing | col">
-                        <p class="m-0 border-end">(@ongoingTasksCount) Ongoing</p>
+                        <p class="m-0">(@ongoingTasksCount) Ongoing</p>
                     </div>
                     <div class="task-completed | col">
                         <p class="m-0">(@completedTasksCount) Completed</p>
                     </div>
                 </div>
-                <button class="text-white fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
+                <button class="fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
                     <i class="fa-solid fa-angle-down"></i>
                     View Today's Task
                 </button>
 
                 <div class="tasks-container">
                     <div class="tasks-table | p-3">
-                        <div class="text-white | table-body">
+                        <div class="table-body">
                             <div class="today-tasks">
                                 <ul class="list-unstyled border-top">
                                     @if (Model.Todos != null && Model.Todos.Count > 0)
