@@ -2,11 +2,11 @@
 @model TodoApp.Pages.TaskList.CreateModel
 
 
-        <form method="post" class="hidden mb-4">
+        <form method="post" class=" mb-4">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="card todo">
                 <div class="card-header">
-                    <div class="due">
+                    <div class="due | w-100">
                         <i class="fa-solid fa-star"></i>
                         <label asp-for="Todo.DueOn" class="control-label">Due date: </label>
                         <input asp-for="Todo.DueOn" class="form-control" />
@@ -18,7 +18,7 @@
                     <span asp-validation-for="Todo.Details" class="text-danger"></span>
                 </div>
                 <div class="card-footer">
-                    <div class="col text-end">
+                    <div class="col text-end mt-2">
                         <input type="submit" value="Add" class="text-white btn btn-success btn-sm | save-btn" />
                         <a asp-page="Tasks" class="text-white btn btn-secondary btn-sm | cancel-btn">Cancel</a>
                     </div>

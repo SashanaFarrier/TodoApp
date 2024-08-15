@@ -19,10 +19,10 @@ namespace TodoApp.Models
         public string? Details { get; set; }
         public string? Description { get; set; }
         public bool IsCompleted { get; set; } 
-        public bool IsInProgress { get; set; }
+        public bool IsActive { get; set; }
         public bool IsOverdue { get; set; }
-        public string Status { get; set; } = "Not Started";
-        public Priority? Priority { get; set; } = Models.Priority.Low;
+        public string? Status { get; set; }
+        public Priority? Priority { get; set; } 
         public string? LoggedInUserID { get; set; }
     }
 

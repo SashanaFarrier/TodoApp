@@ -58,7 +58,7 @@ namespace TodoApp.Pages
 
             if (todo.Status == "Started")
             {
-                todo.IsInProgress = true;
+                todo.IsActive = true;
             }
             else if (todo.Status == "Completed")
             {
@@ -67,7 +67,7 @@ namespace TodoApp.Pages
             }
             else
             {
-                todo.IsInProgress = false;
+                todo.IsActive = false;
                 todo.IsCompleted = false;
             }
 
