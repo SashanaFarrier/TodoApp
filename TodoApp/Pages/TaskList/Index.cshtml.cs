@@ -132,9 +132,9 @@ namespace TodoApp.Pages.TaskList
                     original.CompletedOn = todo.CompletedOn;
                 }
 
-                if(original.IsInProgress != todo.IsInProgress)
+                if(original.IsActive != todo.IsActive)
                 {
-                    original.IsInProgress = todo.IsInProgress;
+                    original.IsActive = todo.IsActive;
                 }
 
                 if(original.IsCompleted != todo.IsCompleted)
@@ -149,14 +149,14 @@ namespace TodoApp.Pages.TaskList
 
                  if (original.Status == "Started")
                  {
-                    original.IsInProgress = true;
+                    original.IsActive = true;
                  } else if (original.Status == "Completed")
                  {
                     original.IsCompleted = true;
                     original.CompletedOn = DateTime.Now;
                  } else
                  {
-                    original.IsInProgress = false;
+                    original.IsActive = false;
                     original.IsCompleted = false;
                  }
 
