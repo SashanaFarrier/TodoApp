@@ -2,7 +2,6 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 
-
 //get all tasks containers
 const taskContainers = Array.from(document.getElementsByClassName("tasks"));
 const sideBarNav = document.getElementById("sidebar-nav");
@@ -46,13 +45,11 @@ function selectActiveTab() {
 }
 
 
-
-
-
 //search tasks
 const formFiltersContainer = document.querySelector(".form-filters");
 const formEls = Array.from(formFiltersContainer.querySelectorAll("select"));
 const taskTypes = document.querySelector(".task-types");
+
 searchTasks()
 filterTasks()
 function searchTasks() {
@@ -85,143 +82,192 @@ function searchTasks() {
     });
 }
 
-
 function filterTasks() {
     formFiltersContainer.addEventListener("change", (e) => {
-
+        const categoryVal = formEls[0].value;
+        const priorityVal = formEls[1].value;
+        const dateVal = formEls[2].value;
         const target = e.target.id;
-        const value = e.target.value;
-        //console.log(value)
-        //category filter
-        if (target == "category" && value !== "") {
-            filterByCategory(value);
-        } else if (target == "priority" && value !== "") {
-            filterByPriority(value);
-        } else if (target == "date" && value !== "") {
-            filterByDate(value);
-        }
+        const targetValue = e.target.value;
 
-        const filterState = formEls.every(el => {
-            console.log(el.value)
-            el.value = ""
-        })
-
-        console.log(filterState)
-    });
-}
-
-    
-            
-function filterByCategory(value) {
-    const priorityVal = formEls[1].value;
-    const dateEl = formEls[2].value;
-   
-    taskContainers.forEach(container => {
-        if (!container.classList.contains(value.toLowerCase())) {
-            container.classList.add("hidden");
-        } else {
-            container.classList.remove("hidden");
-            //const todos = Array.from(container.querySelectorAll(".todo"));
-            //const dueDate = container.querySelector(".due > span").textContent;
-
-            //if (priorityVal) {
-            //    const todos = Array.from(container.querySelectorAll(".todo"));
-            //    todos.forEach(todo => {
-            //        todo.classList.add("hidden");
-            //        if (!todo.querySelector(".tag") && priorityVal == "low") {
-            //            todo.classList.remove("hidden");
-            //        } else {
-            //            if (priorityVal == "medium") {
-            //                const mediumPriorityTasks = Array.from(container.querySelectorAll(".medium"));
-            //                mediumPriorityTasks.forEach(task => {
-            //                    task.closest(".todo").classList.remove("hidden")
-            //                })
-
-
-            //            } else if (priorityVal == "high") {
-            //                const highPriorityTasks = Array.from(container.querySelectorAll(".high"));
-            //                highPriorityTasks.forEach(task => {
-            //                    task.closest(".todo").classList.remove("hidden")
-            //                })
-            //            }
-            //        }
-
-            //    })
-            //}
-        }
-
-    });
-
-   
-}
-
-function filterByPriority(value) {
-    //const categoryVal = formEls[0].value;
-    const dateEl = formEls[2].value;
-    //console.log(dateEl)
-
-    taskContainers.forEach(container => {
-        const todos = Array.from(container.querySelectorAll(".todo"));
-        todos.forEach(todo => {
-            todo.classList.add("hidden");
-            if (!todo.querySelector(".tag") && value == "low") {
-                todo.classList.remove("hidden");
-            } else {
-                if (value == "medium") {
-                    const mediumPriorityTasks = Array.from(container.querySelectorAll(".medium"));
-                    mediumPriorityTasks.forEach(task => {
-                        task.closest(".todo").classList.remove("hidden")
-                    });
-
-                } else if (value == "high") {
-                    const highPriorityTasks = Array.from(container.querySelectorAll(".high"));
-                    highPriorityTasks.forEach(task => {
-                        task.closest(".todo").classList.remove("hidden")
-                    });
+        //if no search options were selected
+        if (categoryVal == "" && priorityVal == "" && dateVal == "") {
+            taskContainers.forEach(container => {
+                //for parent divs with a class of hidden
+                if (container.classList.contains("hidden")) {
+                    container.classList.remove("hidden")
                 }
+
+                //for children todo divs with hidden class
+                const todos = Array.from(container.querySelectorAll(".task-details .todo"))
+                todos.map(todo => {
+                    if (todo.classList.contains("hidden")) {
+                        todo.classList.remove("hidden")
+                    }
+                });
+
+            });
+        }
+
+        //if seach option selected
+        if (targetValue !== "") {
+            let categoryTaskContainer;
+            switch (target) {
+                case "category":
+                    categoryTaskContainer = document.querySelector("." + targetValue + "-cards");
+                    if (priorityVal === "" && dateVal === "") {
+                        filterByCategory(targetValue);
+                    } else if (priorityVal !== "" && dateVal !== "") {
+                        filterByCategoryPriorityAndDate(categoryTaskContainer, targetValue, priorityVal, dateVal)
+                    } else if (priorityVal !== "" && dateVal === "") {
+                        filterByCategoryAndPriority(categoryTaskContainer, targetValue, priorityVal);
+                    } else if (priorityVal === "" && dateVal !== "") {
+                        filterByCategoryAndDate(categoryTaskContainer, targetValue, dateVal);
+                    }
+                    break;
+
+                case "priority":
+                    categoryTaskContainer = document.querySelector("." + categoryVal + "-cards");
+                    if (categoryVal === "" && dateVal === "") {
+                        taskContainers.map(container => {
+                            const todos = Array.from(container.querySelectorAll(".todo"));
+                            todos.filter(todo => priorityFilter(todo, targetValue));
+                        });
+                    } else if (categoryVal !== "" && dateVal !== "") {
+                        filterByCategoryPriorityAndDate(categoryTaskContainer, categoryVal, targetValue, dateVal)
+                    } else if (categoryVal !== "" && dateVal === "") {
+                        filterByCategoryAndPriority(categoryTaskContainer, categoryVal, targetValue);
+                    } else if (categoryVal === "" && dateVal !== "") {
+                        filterByPriorityAndDate(priorityVal, dateVal);
+                    }
+
+                    break;
+
+                case "date":
+                    categoryTaskContainer = document.querySelector("." + categoryVal + "-cards");
+                    if (categoryVal === "" && priorityVal === "") {
+                        taskContainers.map(container => {
+                            const todos = Array.from(container.querySelectorAll(".todo"));
+                            todos.filter(todo => dateFilter(todo, targetValue));
+                        })
+                    } else if (categoryVal !== "" && priorityVal !== "") {
+                        filterByCategoryPriorityAndDate(categoryTaskContainer, categoryVal, priorityVal, targetValue);
+                    } else if (categoryVal !== "" && priorityVal === "") {
+                        filterByCategoryAndDate(categoryTaskContainer, categoryVal, targetValue)
+                    } else if (categoryVal === "" && priorityVal !== "") {
+                        filterByPriorityAndDate(priorityVal, targetValue);
+                    }
             }
-
-        });
-     
+        }
     });
 }
 
-function filterByDate(value) {
-    taskContainers.forEach(container => {
-       //console.log(container)
-        const todos = Array.from(container.querySelectorAll(".todo"));
-       
-        todos.forEach(todo => {
-            todo.classList.add("hidden");
-            const todoCardsDueDates = Array.from(todo.querySelectorAll(".due > span"))
-            
-            todoCardsDueDates.filter(el => {
-                if (el.textContent) {
-                    const dueDate = el.textContent.split(":")[1];
-                    const formattedDueDate = new Date(dueDate);
-                    const today = new Date();
-                    const sevenDaysInMilliseconds = 7 * 24 * 60 * 60 * 1000;
-                    const sevenDaysFromNow = new Date(Date.now() + sevenDaysInMilliseconds);
-                    
-                   
-                    if (value == "today" && formattedDueDate.toLocaleDateString() == today.toLocaleDateString()) {
-                        todo.classList.remove("hidden");
-                       
-                    } else if (value == "this week" && today.getDay()) {
-                        todo.classList.remove("hidden");
-                        //console.log(day + date)
-                    } else if (value == "next week" && formattedDueDate.toLocaleDateString() == sevenDaysFromNow.toLocaleDateString()) {
-                        todo.classList.remove("hidden");
-                    } 
-                    
-                }
-            })
-            
-        });
+function filterByCategory(category) {
+    const tasksContainer = document.querySelector(".tasks-container");
+    const todos = tasksContainer.querySelector(".todo-cards");
+    const activeTodos = tasksContainer.querySelector(".active-cards");
+    const overdueTodos = tasksContainer.querySelector(".overdue-cards");
+    const completedTodos = tasksContainer.querySelector(".completed-cards");
+
+    const categories = ["todo", "active", "overdue", "completed"];
+    const tasksArray = [todos, activeTodos, overdueTodos, completedTodos];
+
+    tasksArray.forEach(task => {
+        task.parentElement.classList.add("hidden");
+    });
+
+    if (category === categories[0]) {
+        todos.parentElement.classList.remove("hidden")
+    } else if (category === categories[1]) {
+       activeTodos.parentElement.classList.remove("hidden")
+    } else if (category === categories[2]) {
+        overdueTodos.parentElement.classList.remove("hidden");
+    } else if (category === categories[3]) {
+       completedTodos.parentElement.classList.remove("hidden")
+    }
+}
+
+function filterByCategoryPriorityAndDate(categoryTodos, category, priorityVal, dateVal) {
+    const todos = Array.from(categoryTodos.querySelectorAll(".todo"));
+    filterByCategory(category);
+    todos.filter(todo => {
+        priorityFilter(todo, priorityVal)
+        dateFilter(todo, dateVal);
 
     });
 }
 
+function filterByCategoryAndPriority(categoryTodos, category, priorityVal) {
+    const todos = Array.from(categoryTodos.querySelectorAll(".todo"))
+    //todos.forEach(todo => todo.classList.add("hidden"));
+    filterByCategory(category);
+    todos.filter(todo => priorityFilter(todo, priorityVal));
+}
+
+function filterByCategoryAndDate(categoryTodos, category, dateVal) {
+    const todos = Array.from(categoryTodos.querySelectorAll(".todo"));
+    filterByCategory(category);
+    todos.filter(todo => dateFilter(todo, dateVal));
+}
+
+function filterByPriorityAndDate(priorityVal, dateVal) {
+    taskContainers.filter(container => {
+        const todos = container.querySelectorAll(".todo");
+        todos.filter(todo => {
+            priorityFilter(todo, priorityVal);
+            dateFilter(todo, dateVal);
+        })
+    })
+}
+
+function priorityFilter(todo, value) {
+
+    todo.classList.add("hidden");
+    if (value == "low" && !todo.querySelector(".tag")) {
+        todo.classList.remove("hidden");
+    } else if (value == "medium" && todo.querySelector(".medium")) {
+        todo.classList.remove("hidden");
+    } else if (value == "high" && todo.querySelector(".high")) {
+        todo.classList.remove("hidden")
+        console.log(todo)
+    } 
+}
+
+function dateFilter(todo, value) {
+    todo.classList.add("hidden");
+    const today = new Date();
+    const todoDueDate = new Date(todo.querySelector(".due > span").textContent.split(":")[1]);
+    
+    if (value == "today" && todoDueDate.toLocaleDateString() == today.toLocaleDateString()) {
+        todo.classList.remove("hidden");
+    } else if (value == "this week" && todoDueDate.getDate() <= getLastDateInTheCurrentWeek()) {
+        todo.classList.remove("hidden");
+    } else if (value == "next week" && (todoDueDate.toLocaleDateString() <= getAllDatesForNextWeek() && todoDueDate.getDate() > getLastDateInTheCurrentWeek())) {
+        todo.classList.remove("hidden");
+    }
+
+}
+
+//helper functions
+function getAllDatesForNextWeek() {
+    const today = new Date();
+    const sevenDaysInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+    const sevenDaysFromNow = new Date(Date.now() + sevenDaysInMilliseconds);
+    return sevenDaysFromNow.toLocaleDateString()
+}
+
+function getLastDateInTheCurrentWeek() {
+    const today = new Date();
+    const daysInAWeek = 7;
+    const currentDate = today.getDate();
+    const currentDay = today.getDay();
+    const remainingWeekDaysExcludingToday = (daysInAWeek - currentDay) - 1
+
+    //calculate the last date in the current week
+    const lastDateInTheCurrentWeek = currentDate + remainingWeekDaysExcludingToday;
+
+    return lastDateInTheCurrentWeek;
+}
 
 
 
