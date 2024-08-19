@@ -115,48 +115,73 @@ function filterTasks() {
             switch (target) {
                 case "category":
                     categoryTaskContainer = document.querySelector("." + targetValue + "-cards");
+
+                    //filter by category only
                     if (priorityVal === "" && dateVal === "") {
                         filterByCategory(targetValue);
-                    } else if (priorityVal !== "" && dateVal !== "") {
+                    }
+                    //filter by category, priority and date
+                    else if (priorityVal !== "" && dateVal !== "") {
                         filterByCategoryPriorityAndDate(categoryTaskContainer, targetValue, priorityVal, dateVal)
-                    } else if (priorityVal !== "" && dateVal === "") {
+                    }
+                    //filter by category and priority
+                    else if (priorityVal !== "" && dateVal === "") {
                         filterByCategoryAndPriority(categoryTaskContainer, targetValue, priorityVal);
-                    } else if (priorityVal === "" && dateVal !== "") {
+                    }
+                    //filter by category date
+                    else if (priorityVal === "" && dateVal !== "") {
                         filterByCategoryAndDate(categoryTaskContainer, targetValue, dateVal);
                     }
                     break;
 
                 case "priority":
+
                     categoryTaskContainer = document.querySelector("." + categoryVal + "-cards");
+                    //filter by priority only
                     if (categoryVal === "" && dateVal === "") {
                         taskContainers.map(container => {
                             const todos = Array.from(container.querySelectorAll(".todo"));
                             todos.filter(todo => priorityFilter(todo, targetValue));
                         });
-                    } else if (categoryVal !== "" && dateVal !== "") {
-                        filterByCategoryPriorityAndDate(categoryTaskContainer, categoryVal, targetValue, dateVal)
-                    } else if (categoryVal !== "" && dateVal === "") {
-                        filterByCategoryAndPriority(categoryTaskContainer, categoryVal, targetValue);
-                    } else if (categoryVal === "" && dateVal !== "") {
-                        filterByPriorityAndDate(priorityVal, dateVal);
                     }
-
+                    //filter by priority, category and date
+                    else if (categoryVal !== "" && dateVal !== "") {
+                        //filterByCategoryPriorityAndDate(categoryTaskContainer, categoryVal, targetValue, dateVal)
+                    }
+                    //filter by priority and category
+                    else if (categoryVal !== "" && dateVal === "") {
+                        //filterByCategoryAndPriority(categoryTaskContainer, categoryVal, targetValue);
+                    }
+                    //filter by priority and date
+                    else if (categoryVal === "" && dateVal !== "") {
+                        filterByPriorityAndDate(targetValue, dateVal, target)
+                    }
                     break;
 
                 case "date":
                     categoryTaskContainer = document.querySelector("." + categoryVal + "-cards");
+
+                    //filter by date only
                     if (categoryVal === "" && priorityVal === "") {
                         taskContainers.map(container => {
                             const todos = Array.from(container.querySelectorAll(".todo"));
                             todos.filter(todo => dateFilter(todo, targetValue));
-                        })
-                    } else if (categoryVal !== "" && priorityVal !== "") {
-                        filterByCategoryPriorityAndDate(categoryTaskContainer, categoryVal, priorityVal, targetValue);
-                    } else if (categoryVal !== "" && priorityVal === "") {
-                        filterByCategoryAndDate(categoryTaskContainer, categoryVal, targetValue)
-                    } else if (categoryVal === "" && priorityVal !== "") {
-                        filterByPriorityAndDate(priorityVal, targetValue);
+                        });
                     }
+
+                    //filter by date, category and priority
+                    else if (categoryVal !== "" && priorityVal !== "") {
+                        //filterByCategoryPriorityAndDate(categoryTaskContainer, categoryVal, priorityVal, targetValue);
+                    }
+                    //filter by date and category
+                    else if (categoryVal !== "" && priorityVal === "") {
+                        //filterByCategoryAndDate(categoryTaskContainer, categoryVal, targetValue)
+                    }
+                    //filter by date and priority
+                    else if (categoryVal === "" && priorityVal !== "") {
+                        filterByPriorityAndDate(priorityVal, targetValue, target)
+                    }
+                    break;
             }
         }
     });
@@ -188,18 +213,21 @@ function filterByCategory(category) {
 }
 
 function filterByCategoryPriorityAndDate(categoryTodos, category, priorityVal, dateVal) {
-    const todos = Array.from(categoryTodos.querySelectorAll(".todo"));
+    let todos = Array.from(categoryTodos.querySelectorAll(".todo"));
     filterByCategory(category);
-    todos.filter(todo => {
-        priorityFilter(todo, priorityVal)
-        dateFilter(todo, dateVal);
+    //filterByPriorityAndDate(todos, priorityVal, dateVal);
+    //console.log(todos)
+    todos = todos.filter(todo => {
+         priorityFilter(todo, priorityVal);
+    }).filter(todo => dateFilter(todo, dateVal))
 
-    });
+   
+    
 }
 
 function filterByCategoryAndPriority(categoryTodos, category, priorityVal) {
     const todos = Array.from(categoryTodos.querySelectorAll(".todo"))
-    //todos.forEach(todo => todo.classList.add("hidden"));
+    
     filterByCategory(category);
     todos.filter(todo => priorityFilter(todo, priorityVal));
 }
@@ -210,42 +238,97 @@ function filterByCategoryAndDate(categoryTodos, category, dateVal) {
     todos.filter(todo => dateFilter(todo, dateVal));
 }
 
-function filterByPriorityAndDate(priorityVal, dateVal) {
-    taskContainers.filter(container => {
-        const todos = container.querySelectorAll(".todo");
-        todos.filter(todo => {
-            priorityFilter(todo, priorityVal);
-            dateFilter(todo, dateVal);
-        })
-    })
-}
+//working on this now
+function filterByPriorityAndDate(priorityVal, dateVal, target) {
+    function getTaskPriority() {
+        taskContainers.filter(container => {
+            const todos = Array.from(container.querySelectorAll(".task-details .todo"));
+            todos.filter(todo => {
+                if (!priorityFilter(todo, priorityVal).classList.contains("hidden") && !dateFilter(todo, dateVal).classList.contains("hidden")) {
+                    priorityFilter(todo, priorityVal);
+                }
+            });
 
-function priorityFilter(todo, value) {
+        });
+    }
 
-    todo.classList.add("hidden");
-    if (value == "low" && !todo.querySelector(".tag")) {
-        todo.classList.remove("hidden");
-    } else if (value == "medium" && todo.querySelector(".medium")) {
-        todo.classList.remove("hidden");
-    } else if (value == "high" && todo.querySelector(".high")) {
-        todo.classList.remove("hidden")
-        console.log(todo)
+    if (target === "priority") {
+
+        if (dateVal === "today" || dateVal === "this week" || dateVal === "next week") {
+            getTaskPriority();
+        } 
+
+    }
+    else if (target == "date") {
+       
+        if (priorityVal === "low") {
+            taskContainers.filter(container => {
+                const todos = Array.from(container.querySelectorAll(".task-details .todo"));
+                todos.filter(todo => {
+                    if (!todo.querySelector(".priority-tag")) {
+                        dateFilter(todo, dateVal);
+                    }
+                })
+               
+            });
+
+        } else if (priorityVal === "medium" || priorityVal === "high") {
+            const MediumAndHighPriorityTasks = Array.from(document.querySelectorAll("." + priorityVal));
+            MediumAndHighPriorityTasks.filter(task => {
+                dateFilter(task.closest(".todo"), dateVal);
+                
+            })
+        }
     } 
 }
 
+function priorityFilter(todo, value) {
+    let result = [];
+
+    const getPriority = () => {
+        result = [];
+        todo.classList.remove("hidden");
+        result.push(todo);
+    }
+    todo.classList.add("hidden");
+    if (value == "low" && !todo.querySelector(".tag")) {
+        todo.classList.remove("hidden");
+        
+    } else if (value == "medium" && todo.querySelector(".medium")) {
+        todo.classList.remove("hidden");
+       
+    } else if (value == "high" && todo.querySelector(".high")) {
+        todo.classList.remove("hidden");
+       
+    } 
+   
+    return todo;
+
+}
+
 function dateFilter(todo, value) {
+    let result = [];
+    const getDate = () => {
+        result = [];
+        todo.classList.remove("hidden");
+        result.push(todo);
+    }
     todo.classList.add("hidden");
     const today = new Date();
     const todoDueDate = new Date(todo.querySelector(".due > span").textContent.split(":")[1]);
-    
+   
     if (value == "today" && todoDueDate.toLocaleDateString() == today.toLocaleDateString()) {
         todo.classList.remove("hidden");
-    } else if (value == "this week" && todoDueDate.getDate() <= getLastDateInTheCurrentWeek()) {
+       
+    } else if(value == "this week" && (todoDueDate.getDate() >= today.getDate()  && todoDueDate.getDate() <= getLastDateInTheCurrentWeek())) {
         todo.classList.remove("hidden");
+       
     } else if (value == "next week" && (todoDueDate.toLocaleDateString() <= getAllDatesForNextWeek() && todoDueDate.getDate() > getLastDateInTheCurrentWeek())) {
         todo.classList.remove("hidden");
+       
     }
 
+    return todo;
 }
 
 //helper functions
