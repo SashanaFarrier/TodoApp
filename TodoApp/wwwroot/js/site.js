@@ -240,22 +240,18 @@ function filterByCategoryAndDate(categoryTodos, category, dateVal) {
 
 //working on this now
 function filterByPriorityAndDate(priorityVal, dateVal, target) {
-    function getTaskPriority() {
-        taskContainers.filter(container => {
-            const todos = Array.from(container.querySelectorAll(".task-details .todo"));
-            todos.filter(todo => {
-                if (!priorityFilter(todo, priorityVal).classList.contains("hidden") && !dateFilter(todo, dateVal).classList.contains("hidden")) {
-                    priorityFilter(todo, priorityVal);
-                }
-            });
-
-        });
-    }
 
     if (target === "priority") {
 
         if (dateVal === "today" || dateVal === "this week" || dateVal === "next week") {
-            getTaskPriority();
+            taskContainers.filter(container => {
+                const todos = Array.from(container.querySelectorAll(".task-details .todo"));
+                todos.filter(todo => {
+                    if (!priorityFilter(todo, priorityVal).classList.contains("hidden") && !dateFilter(todo, dateVal).classList.contains("hidden")) {
+                        priorityFilter(todo, priorityVal);
+                    }
+                });
+            });
         } 
 
     }
