@@ -61,6 +61,12 @@ section {
     height: 100vh;
 }
 
+.fa-star,
+.fa-square-pen {
+    font-size: .8rem;
+    color: var(--clr-yellow);
+}
+
 footer {
     text-align: center;
     color: var(--clr-white);
@@ -240,10 +246,6 @@ footer {
    font-size: clamp(.7rem, calc(.7rem + .15vw), 1rem);
 }
 
-.tasks-container .card-header .due > i {
-    color: var(--clr-yellow);
-}
-
 .tasks-container .card-footer > p {
     margin: 0;
 }
@@ -271,7 +273,7 @@ footer {
 }
 
 /*modal styles*/
-.modal {
+.modal:not(.calendar-popup > .modal) {
     max-width: 800px;
     margin-left: auto;
     right: 0;
@@ -379,9 +381,12 @@ footer {
     color: #fff;
 }
 
+.fc td.fc-day {
+    cursor: pointer;
+}
+
 
 /*forms - global styles*/
-
 .sign-in-form {
     background-color: var(--clr-blue);
 }

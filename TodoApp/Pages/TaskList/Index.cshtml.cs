@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,14 +40,13 @@ namespace TodoApp.Pages.TaskList
     
         public async Task OnGetAsync()
         {
-            var todos = await _context.Todos.ToListAsync();
-
             CurrentUserTodos = new List<Todo>();
-            //Todos = await _context.Todos.ToListAsync();
-            var userId =  _userManager.GetUserId(User);
-            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            var userId = _userManager.GetUserId(User);
 
-            foreach (var todo in todos)
+            var todos = await _context.Todos.ToListAsync();
+            var sortedTodos = todos.OrderByDescending(x => x.CreatedOn).ToList();
+
+            foreach (var todo in sortedTodos)
             {
                 if (todo.LoggedInUserID == userId)
                 {
@@ -164,13 +164,13 @@ namespace TodoApp.Pages.TaskList
 
             }
 
-           
-            //if(todo.DueOn.Date < DateTime.Now)
+
+            //if (todo.DueOn.Date < DateTime.Now)
             //{
             //    todo.IsOverdue = true;
             //}
 
-           
+
 
             try
             {

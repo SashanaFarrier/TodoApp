@@ -1,42 +1,52 @@
 ﻿@page
 @model TodoApp.Pages.DashboardModel
-
+@using Models;
 @{
     Layout = "_TaskViewLayout";
     ViewData["Title"] = "Dashboard";
 
-    int ongoingTasksCount = 0;
+    int overdueTasksCount = 0;
     int completedTasksCount = 0;
-    int dueTasksCount = 0;
+    int weeklyTasksCount = 0;
 
     DateTime currentDate = DateTime.Now.Date;
     int daysToSubtract = (int)currentDate.DayOfWeek;
-    var startOfTheWeek = currentDate.AddDays(-daysToSubtract);
+    //var startOfTheWeek = currentDate.AddDays(-daysToSubtract);
 
     if(Model.Todos != null && Model.Todos.Count > 0)
     {
         foreach (var task in Model.Todos)
         {
-            
-            if (task.Status == "Started" && task.DueOn.Date >= startOfTheWeek.Date && (int)task.DueOn.DayOfWeek <= 6
-              )
-            {
-                ongoingTasksCount++;
-            }
 
-            if ((task.CompletedOn.Date >= startOfTheWeek.Date && (int)task.CompletedOn.DayOfWeek < daysToSubtract + 1) &&
-            task.Status == "Completed")
-            {
+            // if (task.Status == "Started" && task.DueOn.Date >= startOfTheWeek.Date && (int)task.DueOn.DayOfWeek <= 6
+            //   )
+            // {
+            //     ongoingTasksCount++;
+            // }
+            //task.DueOn.Date
+            DateTime firstDayOfWeek = new DateCalculations().FirstDayOfTheWeek;
+            DateTime lastDayOfWeek = new DateCalculations().LastDayOfTheWeek;
+            DateTime completedDate = task.CompletedOn.Date;
+            DateTime dueDate = task.DueOn.Date;
+            string? status = task.Status; 
+
+            if (status != "Completed" && (dueDate >= firstDayOfWeek && dueDate <= lastDayOfWeek)) overdueTasksCount++;
+            
+
+            // if ((task.CompletedOn.Date >= startOfTheWeek.Date && (int)task.CompletedOn.DayOfWeek < daysToSubtract + 1) &&
+            // task.Status == "Completed")
+            // {
+            //     completedTasksCount++;
+
+            // }
+           
+            if (status == "Completed" && (dueDate >= firstDayOfWeek && dueDate <= lastDayOfWeek))
                 completedTasksCount++;
 
-            }
-
-            if (task.DueOn.Date >= startOfTheWeek.Date && (int)task.DueOn.DayOfWeek <= 6)
-            {
-
+            
+            if (dueDate >= firstDayOfWeek && dueDate <= lastDayOfWeek)
+                weeklyTasksCount++;
                 // daysToSubtract == 6 && task.Status != "Completed"
-                dueTasksCount++;
-            }
 
         }
     }
@@ -58,10 +68,10 @@
                         <p class="fw-bold m-0 ">My week</p>
                     </div>
                     <div class="task-overdue | col">
-                        <p class="m-0 ">(@dueTasksCount) Tasks</p>
+                        <p class="m-0 ">(@weeklyTasksCount) Assigned Tasks</p>
                     </div>
                     <div class="task-ongoing | col">
-                        <p class="m-0">(@ongoingTasksCount) Ongoing</p>
+                        <p class="m-0">(@overdueTasksCount) Overdue</p>
                     </div>
                     <div class="task-completed | col">
                         <p class="m-0">(@completedTasksCount) Completed</p>
