@@ -30,6 +30,21 @@ header {
     background-color: var(--clr-blue);
 }
 
+header .navbar ul {
+    text-align: right;
+}
+
+header .navbar ul .nav-link {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: .5em;
+}
+
+header .navbar ul .nav-link > i {
+    order: 1;
+}
+
 section {
     overflow-x: hidden;
 }
@@ -221,6 +236,10 @@ footer {
     justify-content: space-between;
 }
 
+.tasks-container .card-header .due {
+   font-size: clamp(.7rem, calc(.7rem + .15vw), 1rem);
+}
+
 .tasks-container .card-header .due > i {
     color: var(--clr-yellow);
 }
@@ -338,8 +357,13 @@ footer {
     border-radius: 10vw;
 }
 
-/*calendar styles*/
+.dashboard-header .calendar-link:hover {
+    text-decoration: none;
+    opacity: 0.5;
+}
 
+
+/*calendar styles*/
 .fc .fc-toolbar.fc-header-toolbar {
     color: var(--clr-white);
     padding-block: 1em;
@@ -479,6 +503,3 @@ footer {
     /*background: linear-gradient(180deg, rgba(22,22,22,.5) 0%, rgba(3,166,167,.6) 28%);*/
     background: linear-gradient(180deg, rgba(255,159,0,1) 0%, rgba(3,166,167,.65) 100%);
 }
-
-
-

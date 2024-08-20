@@ -1,41 +1,46 @@
 ﻿@page
 @model TodoApp.Pages.ProjectOverviewModel
+@using TodoApp.Models;
+
 @{
     Layout = "_TaskViewLayout";
     ViewData["Title"] = "Tasks Overview";
 }
 
-<section class="position-relative">
-    <div class="row">
-        <div class="col-3 p-0">
+<section class="position-relative h-100">
+    <div class="row h-100">
+        <div class="col-3 p-0 | left-col-container">
             <partial name="_SideBar" />
         </div>
-        <div class="col-9 p-0 | gradient-bg">
-            <div class="text-white p-3 | dashboard-header">
+        <div class="col-9 p-0 | gradient-bg right-col-container">
+            <div class="text-white p-4 | dashboard-header">
                 <h3>My Workspace</h3>
                 <ul class="list-unstyled d-flex gap-3">
                     <li>Overview</li>
-                    <li><a class="text-white" asp-area="" asp-page="/Calendar">Calendar</a></li>
+                    <li><a class="text-white | calendar-link" asp-area="" asp-page="/Calendar">Calendar</a></li>
                 </ul>
             </div>
             <div class="tasks-container">
-                <div class="tasks-table | text-white p-3">
+                <div class="tasks-table | p-4">
                     <div class="table-head row border border-start-0 border-end-0">
                         <div class="col">
-                            <p class="my-2">Task name</p>
+                            <p class="fw-bold text-white my-2">Task name</p>
                         </div>
                         <div class="col-4 border-start border-end">
-                            <p class="ms-2 my-2">Due date</p>
+                            <p class="fw-bold text-white ms-2 my-2">Due date</p>
                         </div>
                     </div>
                     <div class="table-body">
                         <div class="recently-added">
-                            <button class="text-black fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
+                            <button type="button" class="text-black fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
                                 <i class="fa-solid fa-angle-down"></i>
                                 Recently added
                             </button>
-                            @{int addedRecently = 0; }
-                            <ul class="list-unstyled border-top">
+                          
+                            @{
+                                int addedRecently = 0;
+                            }
+                            <ul id="recently-added-dropdown" class="list-unstyled border-top hidden">
 
                                 @foreach (var task in Model.Todos)
                                 {
@@ -80,7 +85,7 @@
                             @if (addedRecently == 0)
                             {
                                 <p class="">No task added recently</p>
-                            }  
+                            }
                         </div>
                         <div class="due-today">
                             <button class="text-black fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
@@ -92,7 +97,7 @@
                                 int dueTodaycount = 0;
                             }
 
-                            <ul class="list-unstyled border-top">
+                            <ul class="list-unstyled border-top hidden">
                                 @foreach (var task in Model.Todos)
                                 {
                                     var today = DateTime.Now.ToShortDateString();
@@ -114,16 +119,14 @@
 
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center border-start border-end">
-                                                   <p class="text-success"> @task.DueOn.ToShortDateString()</p>
+                                                    <p class="text-success"> @task.DueOn.ToShortDateString()</p>
                                                 </div>
 
                                                 <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(task)" />
 
                                             </div>
-
                                         </li>
                                     }
-
                                 }
                             </ul>
                             @if (dueTodaycount == 0)
@@ -131,23 +134,31 @@
                                 <p class="">No task due today</p>
                             }
                         </div>
-                        <div class="due-next-week">
+                        <div class="due-this-week">
                             <button class="text-black fw-bold p-2 ps-0 m-0 border-0 bg-transparent | dropdown-btn">
                                 <i class="fa-solid fa-angle-down"></i>
-                                Due next week
+                                Due this week
                             </button>
                             @{
-                                int dueNextWeekcount = 0;
+                                int dueThisWeekcount = 0;
+                                
                             }
-                            <ul class="list-unstyled border-top">
+                            <ul class="list-unstyled border-top hidden">
 
                                 @foreach (var task in Model.Todos)
                                 {
-                                    var sevenDays = DateTime.Now.AddDays(7).ToShortDateString();
+                                    DateTime firstDayOfWeek = new DateCalculations().FirstDayOfTheWeek;
+                                    DateTime lastDayOfWeek = new DateCalculations().LastDayOfTheWeek;
+                                    DateTime currentDate = DateTime.UtcNow;
+                                   // int dayOfWeek = (int)date.DayOfWeek;
+                                    DateTime dueDate = task.DueOn.Date;
+                                    //var sevenDays = DateTime.Now.AddDays(7).ToShortDateString();
+                                    @* if (task.DueOn.ToShortDateString() == sevenDays && !task.IsCompleted) *@
 
-                                    if (task.DueOn.ToShortDateString() == sevenDays && !task.IsCompleted)
+                                    if ((task.DueOn.Date >= firstDayOfWeek && task.DueOn.Date <= lastDayOfWeek) && !task.IsCompleted)
                                     {
-                                        dueNextWeekcount++;
+                                        //dueThisWeekcount++;
+                                        dueThisWeekcount++;
 
                                         <li class="border-bottom task-name">
                                             <div class="row">
@@ -174,7 +185,7 @@
 
                                 }
                             </ul>
-                            @if (dueNextWeekcount == 0)
+                            @if (dueThisWeekcount == 0)
                             {
                                 <p class="">No task due next week</p>
                             }
@@ -189,13 +200,13 @@
 
 @section Scripts {
     <script>
-    // project overview page
-    const projectOverviewDropdownBtns = document.querySelectorAll(".table-body .dropdown-btn");
-    projectOverviewDropdownBtns.forEach(btn => {
-        const listItemsUL = btn.closest("div").querySelector("ul")
-        btn.addEventListener("click", () => {
-            listItemsUL.classList.toggle("hidden")
+        // project overview page
+        const projectOverviewDropdownBtns = document.querySelectorAll(".table-body .dropdown-btn");
+        projectOverviewDropdownBtns.forEach(btn => {
+            const listItemsUL = btn.closest("div").querySelector("ul")
+            btn.addEventListener("click", () => {
+                listItemsUL.classList.toggle("hidden")
+            })
         })
-    })
     </script>
 }
