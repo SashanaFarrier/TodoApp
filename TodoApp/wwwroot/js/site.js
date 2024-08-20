@@ -50,8 +50,8 @@ const formFiltersContainer = document.querySelector(".form-filters");
 const formEls = Array.from(formFiltersContainer.querySelectorAll("select"));
 const taskTypes = document.querySelector(".task-types");
 
-searchTasks()
-filterTasks()
+searchTasks();
+filterTasks();
 function searchTasks() {
     const searchbarContainer = document.querySelector(".search");
     const searchInput = searchbarContainer.querySelector("input");

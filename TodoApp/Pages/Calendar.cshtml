@@ -1,13 +1,14 @@
 ﻿@page
 @model CalendarModel
+@using Models;
 
 @{
     Layout = "_TaskViewLayout";
     ViewData["Title"] = "Calendar";
 }
 
-<section class="position-relative">
-    <div class="row flex-column flex-md-row">
+<section class="position-relative h-100">
+    <div class="row flex-column flex-md-row h-100">
         <div class="col d-none d-lg-block col-lg-4 col-xl-3 p-0">
             <partial name="_SideBar" />
         </div>
@@ -15,10 +16,57 @@
             <div class="container">
                 <div id='calendar'></div>
             </div>
-           
+
         </div>
     </div>
 </section>
+
+<section class="calendar-popup">
+    <div class="modal fade" id="create-new-task-popup" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="m-0">Add A New Task</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" class="mb-4">
+                    <div class="modal-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="bg-transparent | todo">
+                            <div class="due | row align-items-center">
+                                <div class="col">
+                                    <i class="fa-solid fa-star"></i>
+                                    <label asp-for="Todo.DueOn" class="control-label">Due date: </label>
+                                </div>
+                                <div class="col col-9">
+                                    <input asp-for="Todo.DueOn" class="form-control bg-transparent border-0" type="text" />
+                                </div>
+                                <span asp-validation-for="Todo.DueOn" class="text-danger"></span>
+                            </div>
+                            <div class="card-details | row align-items-center">
+                                    <div class="col">
+                                        <i class="fa-solid fa-square-pen"></i>
+                                        <label asp-for="Todo.Details" class="control-label">Details: </label>
+                                    </div>
+                                    <div class="col col-9">
+                                        <input asp-for="Todo.Details" class="form-control bg-transparent border-0" placeholder="Type here..." />
+                                    </div>
+                                <span asp-validation-for="Todo.Details" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer | py-2 mt-4 ms-auto">
+                        <button type="button" class="btn | close-btn" data-bs-dismiss="modal">Close</button>
+                        <button class="btn | save-btn">Save changes</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
 
 
 @section Scripts {
@@ -30,13 +78,77 @@
                 initialView: 'dayGridMonth',
             })
             calendar.render();
-            
-           
+
+            if (window.location.pathname == "/Calendar") {
+                const calendar = document.getElementById("calendar");
+                const calendarHeader = document.querySelector(".fc-header-toolbar");
+                const calendarHeaderBtns = calendarHeader.getElementsByClassName("fc-toolbar-chunk")[2];
+                const boxEls = Array.from(calendar.querySelectorAll("td.fc-day"));
+                const dueDateInput = document.querySelector(".due input");
+
+                calendar.addEventListener("click", (e) => {
+                    if (e.target.closest("td")) {
+                        const calendarDate = new Date(e.target.closest("td").querySelector("a").getAttribute('aria-label'));
+                       
+                        const month = String(calendarDate.getMonth() + 1).padStart(2, "0");
+                        const day = calendarDate.getDate().toString().padStart(2, "0");
+                        const year = calendarDate.getFullYear();
+
+                        const currentTime = new Date().toLocaleTimeString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true
+                        });
+
+                        const currentDateVal = `${month}/${day}/${year} ${currentTime}`;
+
+                        dueDateInput.value = currentDateVal;
+                        $('#create-new-task-popup').modal("toggle");
+                    }
+                   
+                });
+
+                // boxEls.forEach(box => {
+                //     $(box).on('click', function (e) {
+                //         console.log(box)
+                //         if (e.currentTarget) {
+                           
+                //             const dueDateInput = document.querySelector(".due input");
+                //             const calendarDate = new Date(box.querySelector("a").getAttribute('aria-label'));
+
+                //             const month = String(calendarDate.getMonth() + 1).padStart(2, "0");
+                //             const day = calendarDate.getDate().toString().padStart(2, "0");
+                //             const year = calendarDate.getFullYear();
+
+                //             const currentTime = new Date().toLocaleTimeString("en-US", {
+                //                 hour: "2-digit",
+                //                 minute: "2-digit",
+                //                 hour12: true
+                //             });
+
+                //             const currentDateVal = `${month}/${day}/${year} ${currentTime}`;
+
+                //             dueDateInput.value = currentDateVal;
+                //         }
+                //         $('#create-new-task-popup').modal("toggle")
+                //     })
+                // })
+
+
+            }
+
         });
-      
+
     </script>
 
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+
+
 }
+
 
 
 
