@@ -46,7 +46,7 @@
                                 {
                                     addedRecently++;
                                     var recent = DateTime.Now.AddDays(5);
-
+                                   @*  task.CreatedOn.Date <= recent && task.DueOn.ToShortDateString() != DateTime.Now.ToShortDateString() && !task.IsCompleted *@
                                     if (task.CreatedOn.Date <= recent && task.DueOn.ToShortDateString() != DateTime.Now.ToShortDateString() && !task.IsCompleted)
                                     {
                                         <li class="border-bottom task-name">

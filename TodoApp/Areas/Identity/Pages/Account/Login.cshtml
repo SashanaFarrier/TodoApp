@@ -2,13 +2,15 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    Layout = "_PortalLayout";
+
+    ViewData["Title"] = "Log in Portal";
 }
 
-<section class="mt-5 | sign-in-form">
+<section class="sign-in-form">
     <div class="d-flex flex-column flex-lg-row">
         <div class="col p-2 | sign-in-form-img-container">
-            <div class="d-flex flex-column align-items-center justify-content-center">
+            <div class="d-flex flex-column align-items-center justify-content-center h-100">
                 <p class="fw-bolder fs-1">Stay on track.</p>
                 <img src="~/isometric-outline-time-management-concept.png" />
             </div>
@@ -27,24 +29,20 @@
                     <label asp-for="Input.Password" class="form-label">Password</label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
-                <div class="checkbox mb-3">
+               @*  <div class="checkbox mb-3">
                     <label asp-for="Input.RememberMe" class="form-label">
                         <input class="form-check-input" asp-for="Input.RememberMe" />
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div class="mt-2">
+                </div> *@
+                <button id="login-submit" type="submit" class="w-100 btn btn-lg">Log in</button>
+                <div class="mt-4">
                     <p>
+                        Don't have an account?
+                        <a id="register-link" class="fs-6" asp-area="Identity" asp-page="/Account/Register">Register here</a>
+                    </p>
+                   @*  <p>
                         <a id="forgot-password" class="text-black fs-6" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    @*  <p>
-                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
                     </p> *@
                 </div>
             </form>

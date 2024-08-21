@@ -21,11 +21,13 @@ namespace TodoApp.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<User> signInManager, UserManager<User>userManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -94,10 +96,19 @@ namespace TodoApp.Areas.Identity.Pages.Account
 
             returnUrl ??= Url.Content("~/");
 
+            //get the current logged in user
+            //User user = await _userManager.GetUserAsync(User);
+            //if (user != null)
+            //{
+            //    TempData["User"] = user.Name;
+            //}
+
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+           
 
             ReturnUrl = returnUrl;
         }

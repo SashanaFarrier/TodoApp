@@ -12,20 +12,42 @@ namespace TodoApp.Pages
     {
         private readonly TodoDBContext _context;
         private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         //[BindProperty]
         //public Todo Todo { get; set; }
 
-        public DashboardModel(TodoDBContext context, SignInManager<User> signInManager)
+        public DashboardModel(TodoDBContext context, SignInManager<User> signInManager, UserManager<User>userManager)
         {
             _context = context;
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         public IList<Todo> Todos { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Todos = await _context.Todos.ToListAsync();
+            User? user = await _userManager.GetUserAsync(User);
+
+            if (user != null)
+            {
+                TempData["User"] = user.Name;
+                TempData["UserName"] = user.UserName;
+
+                IList<Todo> storedTodos = await _context.Todos.ToListAsync();
+
+                foreach (var todo in storedTodos)
+                {
+                    if (todo.LoggedInUserID == user.Id)
+                    {
+                        Todos.Add(todo);
+                    }
+                }
+            }
+
+           
+            
+            //Todos = await _context.Todos.ToListAsync();
         }
 
         [BindProperty]

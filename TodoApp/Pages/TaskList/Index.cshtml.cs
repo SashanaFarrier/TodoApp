@@ -41,20 +41,28 @@ namespace TodoApp.Pages.TaskList
         public async Task OnGetAsync()
         {
             CurrentUserTodos = new List<Todo>();
-            var userId = _userManager.GetUserId(User);
+            User? user = await _userManager.GetUserAsync(User);
 
-            var todos = await _context.Todos.ToListAsync();
-            var sortedTodos = todos.OrderByDescending(x => x.CreatedOn).ToList();
-
-            foreach (var todo in sortedTodos)
+            if(user != null)
             {
-                if (todo.LoggedInUserID == userId)
-                {
-                    CurrentUserTodos.Add(todo);
-                }
-            }
 
-            Todos = CurrentUserTodos;
+                var todos = await _context.Todos.ToListAsync();
+                var sortedTodos = todos.OrderByDescending(x => x.CreatedOn).ToList();
+
+                foreach (var todo in sortedTodos)
+                {
+                    if (todo.LoggedInUserID == user.Id)
+                    {
+                        CurrentUserTodos.Add(todo);
+                    }
+                }
+
+                TempData["User"] = user.Name;
+                TempData["UserName"] = user.UserName;
+
+                Todos = CurrentUserTodos;
+            }
+           
            
         }
 
