@@ -12,40 +12,30 @@ namespace TodoApp.Pages
     {
 
         private readonly TodoDBContext _context;
-        private readonly SignInManager<User> _signInManager;
+        //private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
 
         [BindProperty]
         public Todo Todo { get; set; } = default!;
-
-        public IList<Todo> CurrentUserTodos { get; set; }
         public IList<Todo> Todos { get; set; } = default!;
 
-        public CalendarModel(TodoDBContext context, SignInManager<User> signInManager, UserManager<User> userManager)
+        public CalendarModel(TodoDBContext context, UserManager<User> userManager)
         {
             _context = context;
-            _signInManager = signInManager;
+            //_signInManager = signInManager;
             _userManager = userManager;
 
         }
 
         public async Task OnGetAsync()
         {
-            var todos = await _context.Todos.ToListAsync();
+            User? user = await _userManager.GetUserAsync(User);
 
-            CurrentUserTodos = new List<Todo>();
-            //Todos = await _context.Todos.ToListAsync();
-            var userId = _userManager.GetUserId(User);
-
-            foreach (var todo in todos)
+            if (user != null)
             {
-                if (todo.LoggedInUserID == userId)
-                {
-                    CurrentUserTodos.Add(todo);
-                }
+                TempData["User"] = user.Name;
+                TempData["UserName"] = user.UserName;
             }
-
-            Todos = CurrentUserTodos;
 
         }
 

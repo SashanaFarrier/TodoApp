@@ -13,8 +13,6 @@ namespace TodoApp.Pages
         private readonly TodoDBContext _context;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        //[BindProperty]
-        //public Todo Todo { get; set; }
 
         public DashboardModel(TodoDBContext context, SignInManager<User> signInManager, UserManager<User>userManager)
         {
@@ -23,38 +21,42 @@ namespace TodoApp.Pages
             _userManager = userManager;
         }
 
+        public IList<Todo> CurrentUserTodos { get; set; }
         public IList<Todo> Todos { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
+            CurrentUserTodos = new List<Todo>();
             User? user = await _userManager.GetUserAsync(User);
 
             if (user != null)
             {
-                TempData["User"] = user.Name;
-                TempData["UserName"] = user.UserName;
 
-                IList<Todo> storedTodos = await _context.Todos.ToListAsync();
+                var todos = await _context.Todos.ToListAsync();
+                var sortedTodos = todos.OrderByDescending(x => x.CreatedOn).ToList();
 
-                foreach (var todo in storedTodos)
+                foreach (var todo in sortedTodos)
                 {
                     if (todo.LoggedInUserID == user.Id)
                     {
-                        Todos.Add(todo);
+                        CurrentUserTodos.Add(todo);
                     }
                 }
+
+                TempData["User"] = user.Name;
+                TempData["UserName"] = user.UserName;
+
+                Todos = CurrentUserTodos;
+
             }
 
-           
-            
-            //Todos = await _context.Todos.ToListAsync();
         }
 
         [BindProperty]
         public Todo Todo { get; set; } = default!;
         public async Task<IActionResult> OnGetEditAsync(int? id)
         {
-            Todo todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
+            Todo? todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
 
             //var todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
             if (todo == null)

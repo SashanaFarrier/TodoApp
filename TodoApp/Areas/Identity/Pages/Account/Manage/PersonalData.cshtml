@@ -78,19 +78,19 @@
                 <div class="col-5">
                     <h4>Change Password</h4>
                     <form asp-page-handler="UpdatePassword" method="post">
-                        <div class="mb-3">
-                            <label asp-for="PersonalInfo.Password" class="form-label"></label>
+                        <div class="form-floating mb-3">
                             <input asp-for="PersonalInfo.Password" type="text" class="form-control" id="pasword" aria-label="password" placeholder="Enter your current password">
+                            <label asp-for="PersonalInfo.Password" class="form-label"></label>
                             <span asp-validation-for="PersonalInfo.Password" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="PersonalInfo.NewPassword" class="form-label"></label>
+                        <div class="form-floating mb-3">
                             <input asp-for="PersonalInfo.NewPassword" class="form-control" id="newPassword" type="text" aria-label="new password" placeholder="Enter your new password">
+                            <label asp-for="PersonalInfo.NewPassword" class="form-label"></label>
                             <span asp-validation-for="PersonalInfo.NewPassword" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="PersonalInfo.ConfirmPassword" class="form-label"></label>
+                        <div class="form-floating mb-3">
                             <input asp-for="PersonalInfo.ConfirmPassword" class="form-control" id="confirmPassword" type="text" aria-label="confirm new password" placeholder="Confirm your new password">
+                            <label asp-for="PersonalInfo.ConfirmPassword" class="form-label"></label>
                             <span asp-validation-for="PersonalInfo.ConfirmPassword" class="text-danger"></span>
                         </div>
                         <button type="submit" class="btn | save-btn">Update Password</button>
@@ -103,7 +103,7 @@
                 <div class="text-content | col-5 p-3 mb-3 border border-danger rounded-3">
                     <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
                    
-                    <form method="post">
+                    <form method="post" class="mt-3">
                         <button asp-page-handler="DeleteAccount" id="delete-account-btn" class="btn btn-danger">Delete account</button>
                     </form>
                 </div>
