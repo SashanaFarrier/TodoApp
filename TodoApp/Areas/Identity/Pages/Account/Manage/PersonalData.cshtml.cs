@@ -46,6 +46,9 @@ namespace TodoApp.Areas.Identity.Pages.Account.Manage
                 Email = user.Email,
             };
 
+            TempData["User"] = user.Name;
+            TempData["UserName"] = user.UserName;
+
             return Page();
         }
 
