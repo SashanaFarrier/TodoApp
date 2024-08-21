@@ -1,4 +1,5 @@
-﻿<div class="welcome-text-container | text-center lh-1 my-5">
+﻿
+<div class="welcome-text-container | text-center lh-1 my-5">
     <p class="fw-bold">@DateTime.Now.ToString("ddd, MMMM dd")</p>
     @{
         string currentTime = "";
@@ -14,5 +15,5 @@
 
     }
 
-    <p class="fw-bold fs-2">@currentTime, Darren</p>
+    <p class="fw-bold fs-2">@currentTime, @TempData["User"]</p>
 </div>

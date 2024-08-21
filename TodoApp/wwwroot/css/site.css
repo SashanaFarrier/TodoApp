@@ -67,6 +67,29 @@ section {
     color: var(--clr-yellow);
 }
 
+.save-btn,
+.close-btn,
+.cancel-btn {
+    color: var(--clr-white);
+    border-radius: .3em;
+}
+
+.save-btn:hover,
+.add-btn:hover,
+.close-btn:hover,
+.cancel-btn:hover {
+    opacity: 0.5;
+}
+
+.save-btn {
+    background-color: var(--clr-yellow);
+}
+
+.close-btn,
+.cancel-btn {
+    background-color: var(--clr-blue);
+}
+
 footer {
     text-align: center;
     color: var(--clr-white);
@@ -307,23 +330,6 @@ footer {
     border-color: var(--clr-blue);
 }
 
-.modal .btn:hover {
-    opacity: 0.5;
-}
-
-.modal-footer .btn {
-    color: var(--clr-white);
-    border-radius: .3em;
-}
-
-.modal .close-btn {
-    background-color: var(--clr-blue);
-}
-
-.modal-footer .save-btn {
-    background-color: var(--clr-yellow);
-}
-
 .tasks-container .task-types .card .modal {
     font-size: 1rem;
     color: var(--clr-black);
@@ -341,12 +347,12 @@ footer {
 }
 
 .table-body li.task-name button:hover {
-    background-color: blue !important;
+    background-color: var(--clr-blue) !important;
 
 }
 
 .table-body li.task-name button:hover > i {
-    color: #fff !important;
+    color: var(--clr-white) !important;
 }
 
 /*dashboard*/
@@ -386,8 +392,23 @@ footer {
 }
 
 
-/*forms - global styles*/
-.sign-in-form {
+/*portal forms */
+.form-portal-header {
+    height: 10vh;
+}
+.form-portal-container {
+    display: grid;
+    place-content: center;
+    height: 90vh;
+}
+
+#register-link,
+.form-portal-container footer a {
+    color: var(--clr-blue);
+}
+
+.sign-in-form,
+.register-form {
     background-color: var(--clr-blue);
 }
 
@@ -401,7 +422,7 @@ footer {
 
 .register-form-container button,
 .sign-in-form-container button {
-    background-color: var(--clr-black);
+    background-color: var(--clr-yellow);
     border: none;
 }
 
@@ -409,8 +430,9 @@ footer {
 .register-form-container button:focus,
 .sign-in-form-container button:hover,
 .sign-in-form-container button:focus {
-    background-color: rgba(252,163,17,0.7);
-    
+    /*background-color: rgba(252,163,17,0.7);*/
+    color: var(--clr-white);
+    opacity: 0.5;
 }
 
 .sign-in-form-container .form-control:focus {
@@ -420,14 +442,16 @@ footer {
 
 /*sign-in form*/
 
-.sign-in-form-container {
+.sign-in-form-container,
+.register-form-container {
     width:100%;
     border-top-left-radius: 30vw;
     border-bottom-left-radius: 30vw;
     padding: 7em;
 }
 
-.sign-in-form-img-container img {
+.sign-in-form-img-container img,
+.register-form-img-container img {
     width: 100%;
     max-width: 400px;
 }
@@ -479,9 +503,9 @@ footer {
        font-size: .875rem;
     }
 
-    .left-col-container .user-info p:nth-of-type(2) {
+   /* .left-col-container .user-info p:nth-of-type(2) {
         display: none;
-    }
+    }*/
 
 }
 
