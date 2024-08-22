@@ -58,7 +58,6 @@ namespace TodoApp.Pages
         {
             Todo? todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
 
-            //var todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
             if (todo == null)
             {
                 return NotFound();
@@ -95,11 +94,6 @@ namespace TodoApp.Pages
                 todo.IsCompleted = false;
             }
 
-            //if(todo.DueOn.Date < DateTime.Now)
-            //{
-            //    todo.IsOverdue = true;
-            //}
-
             _context.Attach(todo).State = EntityState.Modified;
 
             try
@@ -126,7 +120,6 @@ namespace TodoApp.Pages
             return _context.Todos.Any(e => e.TodoID == id);
         }
 
-
         public async Task<IActionResult> OnPostDeleteAsync(int? id)
         {
             if (id == null)
@@ -145,26 +138,11 @@ namespace TodoApp.Pages
         }
 
         //Logout
-
         public async Task<IActionResult> OnPostLogoutAsync()
         {
             await _signInManager.SignOutAsync();
-
-            //if (returnUrl != null)
-            //{
-            //    return LocalRedirect(returnUrl);
-            //}
-            //else
-            //{
-            //    // This needs to be a redirect so that the browser performs a new
-            //    // request and the identity for the user gets updated.
-            //    return RedirectToPage();
-            //}
-            //return RedirectToPage("~/Areas/Identity/Pages/Account/Login"); 
             return RedirectToPage("/Index");
-
         }
-
 
     }
 }

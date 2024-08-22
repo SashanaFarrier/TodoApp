@@ -39,16 +39,16 @@
                           
                             @{
                                 int addedRecently = 0;
+                                var fiveDaysAgoIncludingToday = DateTime.Now.Date.Subtract(TimeSpan.FromDays(5));
                             }
                             <ul id="recently-added-dropdown" class="list-unstyled border-top hidden">
 
                                 @foreach (var task in Model.Todos)
                                 {
-                                    addedRecently++;
-                                    var recent = DateTime.Now.AddDays(5);
-                                   @*  task.CreatedOn.Date <= recent && task.DueOn.ToShortDateString() != DateTime.Now.ToShortDateString() && !task.IsCompleted *@
-                                    if (task.CreatedOn.Date <= recent && task.DueOn.ToShortDateString() != DateTime.Now.ToShortDateString() && !task.IsCompleted)
+                                    if (task.CreatedOn.Date > fiveDaysAgoIncludingToday)
                                     {
+                                        addedRecently++;
+
                                         <li class="border-bottom task-name">
                                             <div class="row">
                                                 <div class="col">
@@ -72,16 +72,14 @@
                                                     }
 
                                                 </div>
-
                                                 <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(task)" />
-
                                             </div>
-
                                         </li>
                                     }
 
                                 }
                             </ul>
+                           
                             @if (addedRecently == 0)
                             {
                                 <p class="">No task added recently</p>
@@ -150,14 +148,10 @@
                                     DateTime firstDayOfWeek = new DateCalculations().FirstDayOfTheWeek;
                                     DateTime lastDayOfWeek = new DateCalculations().LastDayOfTheWeek;
                                     DateTime currentDate = DateTime.UtcNow;
-                                   // int dayOfWeek = (int)date.DayOfWeek;
                                     DateTime dueDate = task.DueOn.Date;
-                                    //var sevenDays = DateTime.Now.AddDays(7).ToShortDateString();
-                                    @* if (task.DueOn.ToShortDateString() == sevenDays && !task.IsCompleted) *@
-
+                                    
                                     if ((task.DueOn.Date >= firstDayOfWeek && task.DueOn.Date <= lastDayOfWeek) && !task.IsCompleted)
                                     {
-                                        //dueThisWeekcount++;
                                         dueThisWeekcount++;
 
                                         <li class="border-bottom task-name">

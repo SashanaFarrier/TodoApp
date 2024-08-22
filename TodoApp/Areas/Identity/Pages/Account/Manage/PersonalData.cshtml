@@ -7,12 +7,10 @@
 
     Layout = "_TaskViewLayout";
     ViewData["Title"] = "Personal Data";
-    // ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-@* <h3>@ViewData["Title"]</h3> *@
-<section class="position-relative">
-    <div class="row flex-wrap">
+<section class="position-relative h-100">
+    <div class="row flex-wrap h-100">
         <div class="col d-none d-lg-block col-lg-4 col-xl-3 p-0">
             <partial name="_SideBar" />
         </div>
@@ -35,7 +33,6 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                     <form asp-page-handler="UpdateName" method="post">
                         <div class="mb-3">
-                            @* <label asp-for="PersonalInfo.Name" class="form-label">Name</label> *@
                             <label asp-for="PersonalInfo.Name" class="form-label"></label>
                             <input asp-for="PersonalInfo.Name" type="text" class="form-control" aria-label="name" id="name">
                             <span asp-validation-for="PersonalInfo.Name" class="text-danger"></span>
@@ -43,22 +40,9 @@
                         <div class="mb-3">
                             <label asp-for="PersonalInfo.Email" class="form-label"></label>
                             <input asp-for="PersonalInfo.Email" class="form-control" type="email" aria-label="email" readonly>
-                            @*  <input asp-for="PersonalInfo.Email" class="form-control" type="email"       value="darrenrob777@gmail.com" aria-label="email" readonly> *@
                         </div>
                         <button type="submit" class="btn | save-btn">Save</button>
                     </form>
-                    @*  <ul class="nav nav-pills flex-column">
-                    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
-                    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
-                    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
-                    @if (hasExternalLogins)
-                    {
-                    <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
-                    }
-                    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-                    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
-                    </ul> *@
-
                 </div>
                 <div class="col-5">
                     <h4>Manage Email</h4>
@@ -107,10 +91,6 @@
                         <button asp-page-handler="DeleteAccount" id="delete-account-btn" class="btn btn-danger">Delete account</button>
                     </form>
                 </div>
-
-                @* <p>
-                <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
-                </p> *@
             </div>
         </div>
     </div>
@@ -127,23 +107,3 @@
         
     </script>
 }
-
-
-                   
-
-@* <div>
-    <form id="delete-user" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-        @if (Model.RequirePassword)
-        {
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Please enter your password." />
-                <label asp-for="Input.Password" class="form-label"></label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-        }
-        <button class="w-100 btn btn-lg btn-danger" type="submit">Delete data and close my account</button>
-    </form>
-</div> *@
-
-

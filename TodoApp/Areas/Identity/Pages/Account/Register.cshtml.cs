@@ -49,57 +49,11 @@ namespace TodoApp.Areas.Identity.Pages.Account
 
         public Todo Todo { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
-        public InputModel Input { get; set; }
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+        public RegisterUserModel UserInfo { get; set; }
         public string ReturnUrl { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        public class InputModel
-        {
-            [Required]
-            [Display(Name = "Name")]
-            public string Name { get; set; }
-
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
-            public string Email { get; set; }
-
-            
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
-
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
-        }
-
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -115,10 +69,10 @@ namespace TodoApp.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                user.Name = Input.Name;
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                user.Name = UserInfo.Name;
+                await _userStore.SetUserNameAsync(user, UserInfo.Email, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, UserInfo.Email, CancellationToken.None);
+                var result = await _userManager.CreateAsync(user, UserInfo.Password);
 
                 if (result.Succeeded)
                 {
@@ -133,15 +87,13 @@ namespace TodoApp.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    await _emailSender.SendEmailAsync(UserInfo.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    //assign the new user's id to the Todo model once logged in 
-                    //Todo = new Todo() { LoggedInUserID = userId };
-
+                   
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = UserInfo.Email, returnUrl = returnUrl });
                     }
                     else
                     {
@@ -151,7 +103,7 @@ namespace TodoApp.Areas.Identity.Pages.Account
                         Todo = new Todo() { LoggedInUserID = userId };
 
                         return RedirectToPage("/Dashboard");
-                        //return LocalRedirect(returnUrl);
+
                     }
 
                     

@@ -12,19 +12,18 @@ namespace TodoApp.Pages
     {
 
         private readonly TodoDBContext _context;
-        //private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
         [BindProperty]
         public Todo Todo { get; set; } = default!;
         public IList<Todo> Todos { get; set; } = default!;
 
-        public CalendarModel(TodoDBContext context, UserManager<User> userManager)
+        public CalendarModel(TodoDBContext context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _context = context;
-            //_signInManager = signInManager;
             _userManager = userManager;
-
+            _signInManager = signInManager;
         }
 
         public async Task OnGetAsync()
@@ -56,6 +55,12 @@ namespace TodoApp.Pages
             return RedirectToPage("/TaskList/Index");
         }
 
+        //Logout
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToPage("/Index");
+        }
 
     }
 }

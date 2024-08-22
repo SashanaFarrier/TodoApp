@@ -157,16 +157,6 @@ namespace TodoApp.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            //RequirePassword = await _userManager.HasPasswordAsync(user);
-            //if (RequirePassword)
-            //{
-            //    if (!await _userManager.CheckPasswordAsync(user, Input.Password))
-            //    {
-            //        ModelState.AddModelError(string.Empty, "Incorrect password.");
-            //        return Page();
-            //    }
-            //}
-
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
             if (!result.Succeeded)
@@ -180,5 +170,13 @@ namespace TodoApp.Areas.Identity.Pages.Account.Manage
 
             return Redirect("~/");
         }
+
+        //Logout
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToPage("/Index");
+        }
+
     }
 }
