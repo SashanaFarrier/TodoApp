@@ -21,11 +21,7 @@ namespace TodoApp.Pages.TaskList
         private readonly TodoDBContext _context;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        //private readonly IUserStore<User> _userStore;
-        //private readonly IUserEmailStore<User> _emailStore;
-        //private readonly IEmailSender _emailSender;
-
-
+        
         public IndexModel(TodoDBContext context, UserManager<User> userManager,
             SignInManager<User> signInManager)
         {
@@ -69,8 +65,6 @@ namespace TodoApp.Pages.TaskList
         [BindProperty]
         public Todo Todo { get; set; } = default!;
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-
         //handler for adding new task
         public async Task<IActionResult> OnPostAsync()
         {
@@ -91,7 +85,6 @@ namespace TodoApp.Pages.TaskList
         {
             Todo todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
 
-            //var todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
             if (todo == null)
             {
                return NotFound();
@@ -110,6 +103,7 @@ namespace TodoApp.Pages.TaskList
             }
 
             var original = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == todo.TodoID);
+            
             //check for updates made 
 
             if(original != null && todo != null)
@@ -172,14 +166,6 @@ namespace TodoApp.Pages.TaskList
 
             }
 
-
-            //if (todo.DueOn.Date < DateTime.Now)
-            //{
-            //    todo.IsOverdue = true;
-            //}
-
-
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -221,6 +207,15 @@ namespace TodoApp.Pages.TaskList
 
             return RedirectToPage("/TaskList/Index");
         }
+
+
+        //Logout
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToPage("/Index");
+        }
+
 
     }
 }

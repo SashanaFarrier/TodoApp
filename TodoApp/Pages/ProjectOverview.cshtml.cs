@@ -11,11 +11,13 @@ namespace TodoApp.Pages
     public class ProjectOverviewModel : PageModel
     {
         private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly TodoDBContext _context;
-        public ProjectOverviewModel(TodoDBContext context, UserManager<User> userManager)
+        public ProjectOverviewModel(TodoDBContext context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IList<Todo> CurrentUserTodos { get; set; }
@@ -96,5 +98,13 @@ namespace TodoApp.Pages
 
             return RedirectToPage("/ProjectOverview");
         }
+
+        //Logout
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToPage("/Index");
+        }
+
     }
 }

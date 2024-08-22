@@ -21,10 +21,11 @@ namespace TodoApp.Pages
         public _UpdatePartialViewModel(Todo todo)
         {
 
-            if(todo == null)
+            if (todo == null)
             {
                 Todo = new Todo();
-            } else
+            }
+            else
             {
                 Todo = todo;
             }
@@ -34,6 +35,6 @@ namespace TodoApp.Pages
 
         }
 
-      
+
     }
 }

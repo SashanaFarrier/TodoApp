@@ -1,8 +1,4 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-
-//get all tasks containers
+﻿//get all tasks containers
 const taskContainers = Array.from(document.getElementsByClassName("tasks"));
 const sideBarNav = document.getElementById("sidebar-nav");
 
@@ -122,7 +118,6 @@ function filterTasks() {
                     }
                     //filter by category, priority and date
                     else if (priorityVal !== "" && dateVal !== "") {
-                        /*filterByCategoryPriorityAndDate(categoryTaskContainer, targetValue, priorityVal, dateVal)*/
                         filterByCategoryPriorityAndDate(targetValue, priorityVal, dateVal, target)
                     }
                     //filter by category and priority
@@ -147,7 +142,6 @@ function filterTasks() {
                     }
                     //filter by priority, category and date
                     else if (categoryVal !== "" && dateVal !== "") {
-                        /*filterByCategoryPriorityAndDate(categoryTaskContainer, categoryVal, targetValue, dateVal)*/
                         filterByCategoryPriorityAndDate(categoryVal, targetValue, dateVal, target)
                     }
                     //filter by priority and category
@@ -173,7 +167,6 @@ function filterTasks() {
 
                     //filter by date, category and priority
                     else if (categoryVal !== "" && priorityVal !== "") {
-                        /* filterByCategoryPriorityAndDate(categoryTaskContainer, categoryVal, priorityVal, targetValue);*/
                         filterByCategoryPriorityAndDate(categoryVal, priorityVal, targetValue, target);
                     }
                     //filter by date and category
@@ -345,7 +338,6 @@ function dateFilter(todo, value) {
         todo.classList.remove("hidden");
        
     } else if (value == "this week" && (todoDueDate.getUTCDate() >= getFirstDateInTheCurrentWeek() && todoDueDate.getUTCDate() <= getLastDateInTheCurrentWeek())) {
-        //todoDueDate.getUTCDate() >= today.getDate()  && todoDueDate.getDate() <= getLastDateInTheCurrentWeek())
         todo.classList.remove("hidden");
        
     } else if (value == "next week" && (todoDueDate.toLocaleDateString() <= getAllDatesForNextWeek() && todoDueDate.getUTCDate() > getLastDateInTheCurrentWeek())) {

@@ -1,4 +1,4 @@
-﻿@model TodoApp.Pages._UpdatePartialViewModel;
+﻿@model _UpdatePartialViewModel;
 
 <div class="modal fade" id="edit-popup-@Model.Todo.TodoID" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
@@ -11,8 +11,6 @@
                         Delete task
                     </button>
                 </form>
-                    @* <input asp-for="Todo.IsCompleted" type="checkbox" class="me-1" />
-                    <label for="Todo_IsCompleted">Mark Completed</label> *@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
             <form method="post" asp-page-handler="Edit" asp-route-id="Todo.TodoID">
@@ -89,7 +87,6 @@
                         <button class="btn | save-btn">Save changes</button>
                 </div>
             </form>
-             
         </div>
     </div>
 </div>

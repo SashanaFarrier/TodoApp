@@ -11,43 +11,25 @@
 
     DateTime currentDate = DateTime.Now.Date;
     int daysToSubtract = (int)currentDate.DayOfWeek;
-    //var startOfTheWeek = currentDate.AddDays(-daysToSubtract);
 
     if(Model.Todos != null && Model.Todos.Count > 0)
     {
         foreach (var task in Model.Todos)
         {
-
-            // if (task.Status == "Started" && task.DueOn.Date >= startOfTheWeek.Date && (int)task.DueOn.DayOfWeek <= 6
-            //   )
-            // {
-            //     ongoingTasksCount++;
-            // }
-            //task.DueOn.Date
             DateTime firstDayOfWeek = new DateCalculations().FirstDayOfTheWeek;
             DateTime lastDayOfWeek = new DateCalculations().LastDayOfTheWeek;
             DateTime completedDate = task.CompletedOn.Date;
             DateTime dueDate = task.DueOn.Date;
             string? status = task.Status; 
 
-            if (status != "Completed" && (dueDate >= firstDayOfWeek && dueDate <= lastDayOfWeek)) overdueTasksCount++;
-            
-
-            // if ((task.CompletedOn.Date >= startOfTheWeek.Date && (int)task.CompletedOn.DayOfWeek < daysToSubtract + 1) &&
-            // task.Status == "Completed")
-            // {
-            //     completedTasksCount++;
-
-            // }
-           
-            if (status == "Completed" && (dueDate >= firstDayOfWeek && dueDate <= lastDayOfWeek))
-                completedTasksCount++;
-
-            
             if (dueDate >= firstDayOfWeek && dueDate <= lastDayOfWeek)
+            {
                 weeklyTasksCount++;
-                // daysToSubtract == 6 && task.Status != "Completed"
 
+                if (status == "Completed") completedTasksCount++;
+                else if (status != "Completed" && DateTime.Now > dueDate) overdueTasksCount++;
+                
+            }
         }
     }
 
@@ -139,7 +121,6 @@
                                         }
                                     }
                                 </ul>
-
                             </div>
                         </div>
                     </div>
