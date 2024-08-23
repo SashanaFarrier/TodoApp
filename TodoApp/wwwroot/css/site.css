@@ -127,8 +127,9 @@ footer {
 }
 
 #sidebar-nav ul > li.active {
-    background-color: var(--clr-yellow)
+    background-color: var(--clr-yellow);
 }
+
 
 /*right column styles*/
 
