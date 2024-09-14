@@ -7,9 +7,9 @@
     ViewData["Title"] = "Log in Portal";
 }
 
-<section class="sign-in-form">
-    <div class="d-flex flex-column flex-lg-row">
-        <div class="col p-2 | sign-in-form-img-container">
+<section class="sign-in-form | mt-3">
+    <div class="d-flex flex-column flex-md-row justify-content-md-center">
+        <div class="col p-2 d-none d-md-block | sign-in-form-img-container">
             <div class="d-flex flex-column align-items-center justify-content-center h-100">
                 <p class="fw-bolder fs-1">Stay on track.</p>
                 <img src="~/isometric-outline-time-management-concept.png" />
@@ -17,7 +17,7 @@
         </div>
         <div class="col | sign-in-form-container">
             <form id="account" method="post">
-                <h2>Sign in.</h2>
+                <h2 class="text-center mb-4">Sign in.</h2>
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
                     <input asp-for="UserInfo.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
@@ -31,7 +31,7 @@
                 </div>
                 <button id="login-submit" type="submit" class="w-100 btn btn-lg">Log in</button>
                 <div class="mt-4">
-                    <p>
+                    <p class="text-center">
                         Don't have an account?
                         <a id="register-link" class="fs-6" asp-area="Identity" asp-page="/Account/Register">Register here</a>
                     </p>

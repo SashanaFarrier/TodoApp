@@ -6,9 +6,9 @@
     ViewData["Title"] = "Register";
 }
 
-<section class="register-form">
-    <div class="d-flex flex-column flex-lg-row">
-        <div class="col p-2 | register-form-img-container">
+<section class="register-form | mt-3">
+    <div class="d-flex flex-column flex-md-row justify-content-md-center h-100">
+        <div class="col p-2 d-none d-md-block | register-form-img-container">
             <div class="d-flex flex-column align-items-center justify-content-center h-100">
                 <p class="fw-bolder fs-1">Get Started Now.</p>
                 <img src="~/isometric-outline-time-management-concept.png" />
@@ -16,7 +16,7 @@
         </div>
         <div class="col | register-form-container">
             <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <h2>Create a new account.</h2>
+                <h2 class="text-center mb-4">Create a new account.</h2>
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
                     <input asp-for="UserInfo.Name" class="form-control" autocomplete="name" aria-required="true" placeholder="Bob Jones" />
@@ -40,7 +40,7 @@
                 </div>
                 <button id="registerSubmit" type="submit" class="w-100 btn btn-lg">Register</button>
                 <div class="mt-4">
-                    <p>
+                    <p class="text-center">
                        Already have an account?
                         <a id="register-link" class="fs-6" asp-area="Identity" asp-page="/Account/Login">Sign in here</a>
                     </p>

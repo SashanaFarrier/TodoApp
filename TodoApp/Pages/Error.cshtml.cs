@@ -9,6 +9,7 @@ namespace TodoApp.Pages
     public class ErrorModel : PageModel
     {
         public string? RequestId { get; set; }
+        private string? ErrorMesage {  get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
@@ -22,6 +23,7 @@ namespace TodoApp.Pages
         public void OnGet()
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+            
         }
     }
 
