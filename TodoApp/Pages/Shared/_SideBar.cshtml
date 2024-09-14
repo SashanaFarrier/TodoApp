@@ -6,13 +6,13 @@
         <div class="user-profile | d-flex align-items-center border p-2 my-5 gap-3">
             <i class="fa-solid fa-user-plus"></i>
             <div class="user-info">
-                <p class="fw-bold m-0">Darren Robinson</p>
-                <p class="m-0">darrenrob777@gmailcom</p>
+                <p class="fw-bold m-0">@TempData["User"]</p>
+                <p class="m-0">@TempData["UserName"]</p>
             </div>
         </div>
-            <nav>
+            <nav id="sidebar-nav">
                 <ul class="list-unstyled">
-                    <li>
+                    <li class="active">
                         <a class="text-muted text-decoration-none" asp-area="" asp-page="/Dashboard">
                             <i class="fa-solid fa-grip-vertical"></i>
                             Dashboard
@@ -25,10 +25,10 @@
                             Task List
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a class="text-muted text-decoration-none" asp-area="" asp-page="/ProjectOverview">
                             <i class="fa-solid fa-bars-progress"></i>
-                            Project Overview
+                            Tasks Overview
                         </a>
                     </li>
                     <li>
@@ -44,15 +44,9 @@
                             Settings
                         </a>
                     </li>
-               @*  <li>
-                    <a class="text-danger text-decoration-none" asp-area="Identity" asp-page="/Account/Logout">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                        Logout
-                    </a>
-                </li> *@
                 </ul>
             </nav>
-        <form asp-page-handler="Logout" asp-route-returnUrl="@Url.Page("/Account/Manage/Login")" method="post">
+        <form asp-page-handler="Logout" method="post">
             <button type="submit" class="nav-link btn btn-link text-danger">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 Logout

@@ -7,90 +7,90 @@
 
     Layout = "_TaskViewLayout";
     ViewData["Title"] = "Personal Data";
-    // ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-@* <h3>@ViewData["Title"]</h3> *@
-<section class="position-relative">
-    <div class="row flex-wrap">
+<section class="position-relative h-100">
+    <div class="row flex-wrap h-100">
         <div class="col d-none d-lg-block col-lg-4 col-xl-3 p-0">
             <partial name="_SideBar" />
         </div>
         <div class="col col-lg-8 col-xl-9 p-5">
             <div class="row flex-wrap gap-5">
+                @if (TempData["Message"] != null)
+                {
+                    <dialog class="alert alert-success" open>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p class="m-0"> @TempData["Message"]</p>
+                            <form method="dialog">
+                                <button class="fw-bold fs-6 p-2 border-0 bg-transparent">X</button>
+                            </form>
+                        </div>
+                    </dialog>
 
+                }
                 <div class="col-5">
                     <h3>My Account</h3>
-                    <form>
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <form asp-page-handler="UpdateName" method="post">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" aria-label="name" id="name">
+                            <label asp-for="PersonalInfo.Name" class="form-label"></label>
+                            <input asp-for="PersonalInfo.Name" type="text" class="form-control" aria-label="name" id="name">
+                            <span asp-validation-for="PersonalInfo.Name" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input class="form-control" type="email" value="darrenrob777@gmail.com" aria-label="email" readonly>
+                            <label asp-for="PersonalInfo.Email" class="form-label"></label>
+                            <input asp-for="PersonalInfo.Email" class="form-control" type="email" aria-label="email" readonly>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn | save-btn">Save</button>
                     </form>
-                    @*  <ul class="nav nav-pills flex-column">
-                    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
-                    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
-                    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
-                    @if (hasExternalLogins)
-                    {
-                    <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
-                    }
-                    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-                    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
-                    </ul> *@
-
                 </div>
                 <div class="col-5">
                     <h4>Manage Email</h4>
-                    <form>
+                    <form asp-page-handler="UpdateEmail" method="post">
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="name" value="darrenrob777@gmail.com" readonly>
+                            <label asp-for="PersonalInfo.Email" class="form-label"></label>
+                            <input asp-for="PersonalInfo.Email" type="email" class="form-control" id="name" readonly>
                         </div>
                         <div class="mb-3">
-                            <label for="newEmail" class="form-label">New Email</label>
-                            <input class="form-control" id="newEmail" type="email" value="darrenrob777@gmail.com" aria-label="new email">
+                            <label asp-for="PersonalInfo.NewEmail" class="form-label">New Email</label>
+                            <input asp-for="PersonalInfo.NewEmail" class="form-control" id="newEmail" type="email" aria-label="new email">
+                            <span asp-validation-for="PersonalInfo.NewEmail" class="text-danger"></span>
                         </div>
-                        <button type="submit" class="btn btn-primary">Change Email</button>
+                        <button type="submit" class="btn | save-btn">Change Email</button>
                     </form>
                 </div>
                 <div class="col-5">
                     <h4>Change Password</h4>
-                    <form>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Current password</label>
-                            <input type="text" class="form-control" id="pasword" aria-label="password">
+                    <form asp-page-handler="UpdatePassword" method="post">
+                        <div class="form-floating mb-3">
+                            <input asp-for="PersonalInfo.Password" type="text" class="form-control" id="pasword" aria-label="password" placeholder="Enter your current password">
+                            <label asp-for="PersonalInfo.Password" class="form-label"></label>
+                            <span asp-validation-for="PersonalInfo.Password" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
-                            <label for="newPassword" class="form-label">New password</label>
-                            <input class="form-control" id="newPassword" type="text" aria-label="new password">
+                        <div class="form-floating mb-3">
+                            <input asp-for="PersonalInfo.NewPassword" class="form-control" id="newPassword" type="text" aria-label="new password" placeholder="Enter your new password">
+                            <label asp-for="PersonalInfo.NewPassword" class="form-label"></label>
+                            <span asp-validation-for="PersonalInfo.NewPassword" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Confirm new password</label>
-                            <input class="form-control" id="confirmPassword" type="text" aria-label="confirm new password">
+                        <div class="form-floating mb-3">
+                            <input asp-for="PersonalInfo.ConfirmPassword" class="form-control" id="confirmPassword" type="text" aria-label="confirm new password" placeholder="Confirm your new password">
+                            <label asp-for="PersonalInfo.ConfirmPassword" class="form-label"></label>
+                            <span asp-validation-for="PersonalInfo.ConfirmPassword" class="text-danger"></span>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update Password</button>
+                        <button type="submit" class="btn | save-btn">Update Password</button>
                     </form>
                 </div>
             </div>
             <div class="danger-zone | mt-5">
                 <h3 class="text-danger">Danger Zone</h3>
-                <div class="text-content | col-5 p-3 border border-danger rounded-3">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="text-content | col-5 p-3 mb-3 border border-danger rounded-3">
                     <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
-                    </p>
-                    <form method="post">
-                        <button asp-page-handler="DeleteAccount" class="btn btn-danger">Delete account</button>
+                   
+                    <form method="post" class="mt-3">
+                        <button asp-page-handler="DeleteAccount" id="delete-account-btn" class="btn btn-danger">Delete account</button>
                     </form>
                 </div>
-               
-                @* <p>
-                <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
-                </p> *@
             </div>
         </div>
     </div>
@@ -98,4 +98,12 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const deleteAccountBtn = document.getElementById("delete-account-btn");
+        deleteAccountBtn.addEventListener("click", () => {
+            confirm("You are about to permanently delete this account. Click 'OK' to continue.");
+        });
+        
+    </script>
 }

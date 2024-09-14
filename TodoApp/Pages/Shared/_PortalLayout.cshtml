@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TodoApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/dist/main.98105f24974c8866e486.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
+</head>
+<body>
+    <header class="form-portal-header">
+        <nav class="h-100">
+            <div class="container h-100">
+                <a class="navbar-brand d-flex justify-content-start align-items-center h-100" asp-area="" asp-page="/Index">
+                    <div class="logo | d-flex align-items-center">
+                        <img src="~/logo.png" alt="logo" />
+                        <span class="fw-bold text-white ms-2">TaskApp
+                            <span class="colored-text">.</span>
+                        </span>
+                    </div>
+                </a>
+            </div>
+        </nav>
+    </header>
+    <div class="container | form-portal-container">
+        @RenderBody()
+
+        <footer class="footer text-muted mt-5">
+            <div class="container">
+                &copy; 2024 - TaskApp - <a href="https://github.com/SashanaFarrier" target="_blank">Sashana Farrier</a>
+            </div>
+        </footer>
+    </div>
+       
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/dist/main.54bac1217db2f65975dc.build.js" asp-append-version="true" type="module"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

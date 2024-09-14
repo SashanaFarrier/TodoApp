@@ -1,5 +1,4 @@
 ﻿@page
-@* model TodoApp.Pages.CRUD.Tasks *@
 @model TodoApp.Pages.TaskList.IndexModel
 
 @{
@@ -9,8 +8,8 @@
 }
 
 
-<section class="position-relative">
-    <div class="row flex-column flex-md-row">
+<section class="position-relative h-100">
+    <div class="row flex-column flex-md-row h-100">
         <div class="col d-none d-lg-block col-lg-4 col-xl-3 p-0">
             <partial name="_SideBar" />
         </div>
@@ -19,10 +18,6 @@
         </div>
     </div>
 </section>
-@* 
-<div>
-    <a asp-page="Index">Back to List</a>
-</div> *@
 
 @section Scripts {
     @{

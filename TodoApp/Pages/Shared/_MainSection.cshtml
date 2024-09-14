@@ -11,43 +11,37 @@
                     <input class="text-white" type="search" name="search" placeholder="search task or project" />
                     <i class="fa-solid fa-magnifying-glass text-white position-absolute"></i>
                 </div>
-
             </div>
         </div>
         <div class="row align-items-center my-4">
             <div class="col">
-                <div class="new-task-btn add-btn">
-                    <button class="btn">
-                        New Task
-                        <i class="fa-solid fa-angle-down"></i>
-                    </button>
-                </div>
+                <button class="fw-bold btn | new-task-btn add-btn">New Task</button>
             </div>
             <div class="col">
                 <form class="form-filters | d-flex flex-wrap justify-content-end align-items-center gap-3">
                     <div class="category-btn options">
                         <select id="category" class="form-select" aria-label="Category">
-                            <option selected>Category</option>
+                            <option value="" selected>Category</option>
                             <option value="todo">Todo</option>
-                            <option value="in progress">In Progress</option>
+                            <option value="active">Active</option>
                             <option value="completed">Completed</option>
                             <option value="overdue">Overdue</option>
                         </select>
                     </div>
                     <div class="priority-btn options">
                         <select id="priority" class="form-select" aria-label="Priority">
-                            <option selected>Priority</option>
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
+                            <option value="" selected>Priority</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
                         </select>
                     </div>
                     <div class="date-btn options">
                         <select id="date" class="form-select" aria-label="Date">
-                            <option selected>Date</option>
+                            <option value="" selected>Date</option>
                             <option value="today">Today</option>
-                            <option value="1 week ago">1 week ago</option>
-                            <option value="2 weeks ago">2 weeks ago</option>
+                            <option value="this week">This week</option>
+                            <option value="next week">Next week</option>
                         </select>
                     </div>
                 </form>
@@ -61,69 +55,20 @@
                         <h3>Todo</h3>
                         <i class="fa-solid fa-square-plus add-btn"></i>
                     </div>
-                    <div class="todo-cards task-details">
+                    <div class="new-task hidden">
                         <!--this is the form for adding new task.-->
                         <partial name="Create" model="Model.Todo" />
-                       <!--Todo tasks-->
-                        @if(Model.Todos.Count > 0) {
-                            foreach (var todo in Model.Todos)
-                            {
-                                if (!todo.IsCompleted && !todo.IsInProgress && !todo.IsOverdue)
-                                {
-                                    <div id="@todo.TodoID" class="card todo | mb-4">
-                                        <div class="card-header">
-                                            <div class="due">
-                                                <i class="fa-solid fa-star"></i>
-                                                <span>Due date: @todo.DueOn.ToString("MM/dd/yyyy")</span>
-                                            </div>
-                                            <div>
-                                                <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
-                                                    <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
-                                                </button>
-                                                <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
-                                            </div>
-                                        </div>
-                                        <div class="card-details">
-                                            <p>@todo.Details</p>
-                                        </div>
-                                        <div class="card-footer">
-                                            <div class="priority-tag">
-                                                @* <span class="tag low">@todo.Priority</span> *@
-                                                @{
-                                                    if (todo.Priority != 0)
-                                                    {
-                                                        string priority = todo.Priority.ToString().ToLower();
-
-                                                        <span class="@($"tag {priority}")">@todo.Priority</span>
-                                                    }
-                                                }
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                }
-
-
-                            }
-                        }
-                       
+                        <!--Todo tasks-->
                     </div>
-                </div>
-
-                <div class="in-progress tasks">
-                    <div class="header | d-flex justify-content-between align-items-center">
-                        <h3>In Progress</h3>
-                    </div>
-
-                    <div class="in-progress-cards task-details">
-                        @if(Model.Todos.Count > 0)
+                    <div class="todo-cards task-details">
+                        @if (Model.Todos.Count > 0)
                         {
                             foreach (var todo in Model.Todos)
                             {
-                                if ((todo.IsInProgress && todo.Status == "Started") && (!todo.IsOverdue && !todo.IsCompleted))
+                                if (!todo.IsCompleted && !todo.IsActive && !todo.IsOverdue)
                                 {
                                     <div id="@todo.TodoID" class="card todo | mb-4">
+                                        <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
                                         <div class="card-header">
                                             <div class="due">
                                                 <i class="fa-solid fa-star"></i>
@@ -133,23 +78,23 @@
                                                 <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
                                                     <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
                                                 </button>
-                                                <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
                                             </div>
                                         </div>
                                         <div class="card-details">
                                             <p>@todo.Details</p>
                                         </div>
-                                        <div class="card-footer">
-                                            <div class="priority-tag">
-                                                @{
-                                                    if (todo.Priority != 0)
-                                                    {
-                                                        <span class="tag low">@todo.Priority</span>
-                                                    }
-                                                }
+                                        @{
+                                            if (todo.Priority != null)
+                                            {
+                                                string priority = todo.Priority.ToString().ToLower();
 
-                                            </div>
-                                        </div>
+                                                <div class="card-footer">
+                                                    <div class="priority-tag">
+                                                        <span class="@($"tag {priority}")">@todo.Priority</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
 
                                     </div>
                                 }
@@ -157,7 +102,56 @@
 
                             }
                         }
-                       
+
+                    </div>
+                </div>
+
+                <div class="active tasks">
+                    <div class="header | d-flex justify-content-between align-items-center">
+                        <h3>Active</h3>
+                    </div>
+
+                    <div class="active-cards task-details">
+                        @if (Model.Todos.Count > 0)
+                        {
+                            foreach (var todo in Model.Todos)
+                            {
+                                if ((todo.IsActive && todo.Status == "Started") && (!todo.IsOverdue && !todo.IsCompleted))
+                                {
+                                    <div id="@todo.TodoID" class="card todo | mb-4">
+                                        <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
+                                        <div class="card-header">
+                                            <div class="due">
+                                                <i class="fa-solid fa-star"></i>
+                                                <span>Due date: @todo.DueOn.ToString("MM/dd/yyyy")</span>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
+                                                    <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-details">
+                                            <p>@todo.Details</p>
+                                        </div>
+                                        @{
+                                            if (todo.Priority != null)
+                                            {
+                                                string priority = todo.Priority.ToString().ToLower();
+
+                                                <div class="card-footer">
+                                                    <div class="priority-tag">
+                                                        <span class="@($"tag {priority}")">@todo.Priority</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+
+                                    </div>
+                                }
+                            }
+                        }
+
                     </div>
                 </div>
                 <div class="overdue tasks">
@@ -166,13 +160,14 @@
                     </div>
 
                     <div class="overdue-cards task-details">
-                        @if(Model.Todos.Count > 0)
+                        @if (Model.Todos.Count > 0)
                         {
                             foreach (var todo in Model.Todos)
                             {
                                 if (todo.IsOverdue && !todo.IsCompleted)
                                 {
                                     <div id="@todo.TodoID" class="card todo | mb-4">
+                                        <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
                                         <div class="card-header">
                                             <div class="due">
                                                 <i class="fa-solid fa-star"></i>
@@ -182,31 +177,27 @@
                                                 <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
                                                     <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
                                                 </button>
-                                                <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
                                             </div>
                                         </div>
                                         <div class="card-details">
                                             <p>@todo.Details</p>
                                         </div>
-                                        <div class="card-footer">
-                                            <div class="priority-tag">
-                                                @{
-                                                    if (todo.Priority != 0)
-                                                    {
-                                                        <span class="tag low">@todo.Priority</span>
-                                                    }
-                                                }
-
-                                            </div>
-                                        </div>
-
+                                        @{
+                                            if (todo.Priority != null)
+                                            {
+                                                string priority = todo.Priority.ToString().ToLower();
+                                                <div class="card-footer">
+                                                    <div class="priority-tag">
+                                                        <span class="@($"tag {priority}")">@todo.Priority</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
                                     </div>
                                 }
-
-
                             }
                         }
-                       
+
                     </div>
                 </div>
 
@@ -223,6 +214,7 @@
                                 if (todo.IsCompleted)
                                 {
                                     <div id="@todo.TodoID" class="card todo | mb-4">
+                                        <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
                                         <div class="card-header">
                                             <div class="due">
                                                 <i class="fa-solid fa-star"></i>
@@ -232,23 +224,22 @@
                                                 <button type="button" class="edit-btn border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="@("#edit-popup-" + todo.TodoID)">
                                                     <i class="fa-solid fa-arrow-up-right-from-square text-black"></i>
                                                 </button>
-                                                <partial name="_UpdatePartialView" model="new _UpdatePartialViewModel(todo)" />
                                             </div>
                                         </div>
                                         <div class="card-details">
                                             <p>@todo.Details</p>
                                         </div>
-                                        <div class="card-footer">
-                                            <div class="priority-tag">
-                                                @{
-                                                    if (todo.Priority != 0)
-                                                    {
-                                                        <span class="tag low">@todo.Priority</span>
-                                                    }
-                                                }
-
-                                            </div>
-                                        </div>
+                                        @{
+                                            if (todo.Priority != null)
+                                            {
+                                                string priority = todo.Priority.ToString().ToLower();
+                                                <div class="card-footer">
+                                                    <div class="priority-tag">
+                                                        <span class="@($"tag {priority}")">@todo.Priority</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
 
                                     </div>
                                 }

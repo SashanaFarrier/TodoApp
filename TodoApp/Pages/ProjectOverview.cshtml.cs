@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using TodoApp.Areas.Identity.Data;
 using TodoApp.Data;
 using TodoApp.Models;
 
@@ -8,18 +10,44 @@ namespace TodoApp.Pages
 {
     public class ProjectOverviewModel : PageModel
     {
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly TodoDBContext _context;
-        public ProjectOverviewModel(TodoDBContext context)
+        public ProjectOverviewModel(TodoDBContext context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
+        public IList<Todo> CurrentUserTodos { get; set; }
         public IList<Todo> Todos { get; set; } = default!;
         public async Task OnGet()
         {
-            Todos = await _context.Todos.ToListAsync();
-        }
+            CurrentUserTodos = new List<Todo>();
+            User? user = await _userManager.GetUserAsync(User);
 
+            if (user != null)
+            {
+
+                var todos = await _context.Todos.ToListAsync();
+                var sortedTodos = todos.OrderByDescending(x => x.CreatedOn).ToList();
+
+                foreach (var todo in sortedTodos)
+                {
+                    if (todo.LoggedInUserID == user.Id)
+                    {
+                        CurrentUserTodos.Add(todo);
+                    }
+                }
+
+                TempData["User"] = user.Name;
+                TempData["UserName"] = user.UserName;
+
+                Todos = CurrentUserTodos;
+
+            }
+        }
 
         public async Task<IActionResult> OnPostEditAsync(Todo todo)
         {
@@ -70,5 +98,13 @@ namespace TodoApp.Pages
 
             return RedirectToPage("/ProjectOverview");
         }
+
+        //Logout
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToPage("/Index");
+        }
+
     }
 }

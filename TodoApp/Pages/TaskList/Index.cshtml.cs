@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,11 +21,7 @@ namespace TodoApp.Pages.TaskList
         private readonly TodoDBContext _context;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        //private readonly IUserStore<User> _userStore;
-        //private readonly IUserEmailStore<User> _emailStore;
-        //private readonly IEmailSender _emailSender;
-
-
+        
         public IndexModel(TodoDBContext context, UserManager<User> userManager,
             SignInManager<User> signInManager)
         {
@@ -39,29 +36,34 @@ namespace TodoApp.Pages.TaskList
     
         public async Task OnGetAsync()
         {
-            var todos = await _context.Todos.ToListAsync();
-
             CurrentUserTodos = new List<Todo>();
-            //Todos = await _context.Todos.ToListAsync();
-            var userId =  _userManager.GetUserId(User);
-            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            User? user = await _userManager.GetUserAsync(User);
 
-            foreach (var todo in todos)
+            if(user != null)
             {
-                if (todo.LoggedInUserID == userId)
-                {
-                    CurrentUserTodos.Add(todo);
-                }
-            }
 
-            Todos = CurrentUserTodos;
+                var todos = await _context.Todos.ToListAsync();
+                var sortedTodos = todos.OrderByDescending(x => x.CreatedOn).ToList();
+
+                foreach (var todo in sortedTodos)
+                {
+                    if (todo.LoggedInUserID == user.Id)
+                    {
+                        CurrentUserTodos.Add(todo);
+                    }
+                }
+
+                TempData["User"] = user.Name;
+                TempData["UserName"] = user.UserName;
+
+                Todos = CurrentUserTodos;
+            }
+           
            
         }
 
         [BindProperty]
         public Todo Todo { get; set; } = default!;
-
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
 
         //handler for adding new task
         public async Task<IActionResult> OnPostAsync()
@@ -83,7 +85,6 @@ namespace TodoApp.Pages.TaskList
         {
             Todo todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
 
-            //var todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
             if (todo == null)
             {
                return NotFound();
@@ -102,6 +103,7 @@ namespace TodoApp.Pages.TaskList
             }
 
             var original = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == todo.TodoID);
+            
             //check for updates made 
 
             if(original != null && todo != null)
@@ -132,9 +134,9 @@ namespace TodoApp.Pages.TaskList
                     original.CompletedOn = todo.CompletedOn;
                 }
 
-                if(original.IsInProgress != todo.IsInProgress)
+                if(original.IsActive != todo.IsActive)
                 {
-                    original.IsInProgress = todo.IsInProgress;
+                    original.IsActive = todo.IsActive;
                 }
 
                 if(original.IsCompleted != todo.IsCompleted)
@@ -149,28 +151,20 @@ namespace TodoApp.Pages.TaskList
 
                  if (original.Status == "Started")
                  {
-                    original.IsInProgress = true;
+                    original.IsActive = true;
                  } else if (original.Status == "Completed")
                  {
                     original.IsCompleted = true;
                     original.CompletedOn = DateTime.Now;
                  } else
                  {
-                    original.IsInProgress = false;
+                    original.IsActive = false;
                     original.IsCompleted = false;
                  }
 
                 _context.Attach(original).State = EntityState.Modified;
 
             }
-
-           
-            //if(todo.DueOn.Date < DateTime.Now)
-            //{
-            //    todo.IsOverdue = true;
-            //}
-
-           
 
             try
             {
@@ -213,6 +207,15 @@ namespace TodoApp.Pages.TaskList
 
             return RedirectToPage("/TaskList/Index");
         }
+
+
+        //Logout
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToPage("/Index");
+        }
+
 
     }
 }

@@ -4,13 +4,15 @@ using TodoApp.Data;
 using TodoApp.Services;
 using Microsoft.AspNetCore.Identity;
 using TodoApp.Areas.Identity.Data;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<TodoDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("TodoDBContext") ?? throw new InvalidOperationException("Connection string 'TodoDBContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("TodoDBConnecttionStr") ?? throw new InvalidOperationException("Connection string 'TodoDBConnecttionStr' not found.")));
+
 
 //builder.Services.AddDefaultIdentity<TodoAppUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TodoAppContext>();
 builder.Services.AddIdentity<User, IdentityRole>()
@@ -20,7 +22,7 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 builder.Services.AddDbContext<UserDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("TodoAppContextConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UserDBConnectionStr"));
 });
 builder.Services.AddHostedService<OverdueTaskChecker>();
 

@@ -12,29 +12,52 @@ namespace TodoApp.Pages
     {
         private readonly TodoDBContext _context;
         private readonly SignInManager<User> _signInManager;
-        //[BindProperty]
-        //public Todo Todo { get; set; }
+        private readonly UserManager<User> _userManager;
 
-        public DashboardModel(TodoDBContext context, SignInManager<User> signInManager)
+        public DashboardModel(TodoDBContext context, SignInManager<User> signInManager, UserManager<User>userManager)
         {
             _context = context;
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
+        public IList<Todo> CurrentUserTodos { get; set; }
         public IList<Todo> Todos { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Todos = await _context.Todos.ToListAsync();
+            CurrentUserTodos = new List<Todo>();
+            User? user = await _userManager.GetUserAsync(User);
+
+            if (user != null)
+            {
+
+                var todos = await _context.Todos.ToListAsync();
+                var sortedTodos = todos.OrderByDescending(x => x.CreatedOn).ToList();
+
+                foreach (var todo in sortedTodos)
+                {
+                    if (todo.LoggedInUserID == user.Id)
+                    {
+                        CurrentUserTodos.Add(todo);
+                    }
+                }
+
+                TempData["User"] = user.Name;
+                TempData["UserName"] = user.UserName;
+
+                Todos = CurrentUserTodos;
+
+            }
+
         }
 
         [BindProperty]
         public Todo Todo { get; set; } = default!;
         public async Task<IActionResult> OnGetEditAsync(int? id)
         {
-            Todo todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
+            Todo? todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
 
-            //var todo = await _context.Todos.FirstOrDefaultAsync(m => m.TodoID == id);
             if (todo == null)
             {
                 return NotFound();
@@ -58,7 +81,7 @@ namespace TodoApp.Pages
 
             if (todo.Status == "Started")
             {
-                todo.IsInProgress = true;
+                todo.IsActive = true;
             }
             else if (todo.Status == "Completed")
             {
@@ -67,14 +90,9 @@ namespace TodoApp.Pages
             }
             else
             {
-                todo.IsInProgress = false;
+                todo.IsActive = false;
                 todo.IsCompleted = false;
             }
-
-            //if(todo.DueOn.Date < DateTime.Now)
-            //{
-            //    todo.IsOverdue = true;
-            //}
 
             _context.Attach(todo).State = EntityState.Modified;
 
@@ -102,7 +120,6 @@ namespace TodoApp.Pages
             return _context.Todos.Any(e => e.TodoID == id);
         }
 
-
         public async Task<IActionResult> OnPostDeleteAsync(int? id)
         {
             if (id == null)
@@ -121,26 +138,11 @@ namespace TodoApp.Pages
         }
 
         //Logout
-
         public async Task<IActionResult> OnPostLogoutAsync()
         {
             await _signInManager.SignOutAsync();
-
-            //if (returnUrl != null)
-            //{
-            //    return LocalRedirect(returnUrl);
-            //}
-            //else
-            //{
-            //    // This needs to be a redirect so that the browser performs a new
-            //    // request and the identity for the user gets updated.
-            //    return RedirectToPage();
-            //}
-            //return RedirectToPage("~/Areas/Identity/Pages/Account/Login"); 
             return RedirectToPage("/Index");
-
         }
-
 
     }
 }

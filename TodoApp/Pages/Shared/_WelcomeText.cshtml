@@ -1,6 +1,8 @@
-﻿<div class="welcome-text-container | text-center lh-1 my-5">
+﻿
+<div class="welcome-text-container | text-center lh-1 my-5">
     <p class="fw-bold">@DateTime.Now.ToString("ddd, MMMM dd")</p>
     @{
+        string name = TempData["User"].ToString().Split(" ")[0];
         string currentTime = "";
 
         if (DateTime.Now.Hour < 12)
@@ -14,5 +16,5 @@
 
     }
 
-    <p class="fw-bold fs-2">@currentTime, Darren</p>
+    <p class="fw-bold fs-2">@currentTime, @name</p>
 </div>

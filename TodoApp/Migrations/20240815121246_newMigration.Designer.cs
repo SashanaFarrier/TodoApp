@@ -12,7 +12,7 @@ using TodoApp.Data;
 namespace TodoApp.Migrations
 {
     [DbContext(typeof(TodoDBContext))]
-    [Migration("20240515235638_newMigration")]
+    [Migration("20240815121246_newMigration")]
     partial class newMigration
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace TodoApp.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -52,10 +52,10 @@ namespace TodoApp.Migrations
                     b.Property<DateTime>("DueOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsCompleted")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsInProgress")
+                    b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsOverdue")
@@ -68,7 +68,6 @@ namespace TodoApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TodoID");
